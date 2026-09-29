@@ -1,0 +1,220 @@
+<!-- ④ Projects 페이지 위젯 — 아임웹 페이지 주소 /projects -->
+<div class="jd jd-page jd-sub" data-jd-key="projects">
+
+<!-- ═ 머리 + 필터 ═ -->
+<section class="jd-sec jd-head" id="jd-top">
+  <div class="jd-grid">
+    <p class="jd-label">시공 사례</p>
+    <h1 class="jd-h1 jd-lr">지금 영업 중인 <br>가게들이에요.</h1>
+    <p class="jd-lead jd-lr">가게마다 사장님이 처음 하신 부탁, 저희가 한 일, 오픈 30일째 고친 것까지 적었어요. <br>공사비는 공사가 끝나고 최종으로 받은 금액이에요.</p>
+  </div>
+  <div class="jd-grid jd-pf">
+    <div class="jd-pf-row" role="group" aria-label="업종">
+      <span>업종</span>
+      <button type="button" data-jd-k="type" data-jd-v="all" aria-pressed="true">전체</button>
+      <button type="button" data-jd-k="type" data-jd-v="cafe" aria-pressed="false">카페 · 베이커리</button>
+      <button type="button" data-jd-k="type" data-jd-v="dining" aria-pressed="false">식당 · 바</button>
+      <button type="button" data-jd-k="type" data-jd-v="retail" aria-pressed="false">쇼룸</button>
+    </div>
+    <div class="jd-pf-row" role="group" aria-label="평수">
+      <span>평수</span>
+      <button type="button" data-jd-k="size" data-jd-v="all" aria-pressed="true">전체</button>
+      <button type="button" data-jd-k="size" data-jd-v="s" aria-pressed="false">20평 미만</button>
+      <button type="button" data-jd-k="size" data-jd-v="m" aria-pressed="false">20~40평</button>
+      <button type="button" data-jd-k="size" data-jd-v="l" aria-pressed="false">40평 이상</button>
+    </div>
+    <p class="jd-pf-count" id="jd-pf-count" aria-live="polite">6곳</p>
+  </div>
+  <ul class="jd-idx" id="jd-idx">
+    <li data-jd-type="cafe" data-jd-size="s"><a href="#jd-no41"><img data-jd-src="p01-seongsu-cafe.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p01-seongsu-cafe.jpg" alt="" loading="lazy"><b>오름 커피</b><span>성수 · 카페 18평</span></a></li>
+    <li data-jd-type="dining" data-jd-size="m"><a href="#jd-no37"><img data-jd-src="p02-hannam-bar.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p02-hannam-bar.jpg" alt="" loading="lazy"><b>바 솔</b><span>한남 · 와인바 22평</span></a></li>
+    <li data-jd-type="cafe" data-jd-size="m"><a href="#jd-no35"><img data-jd-src="p03-yeonnam-bakery.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p03-yeonnam-bakery.jpg" alt="" loading="lazy"><b>밀앤로프</b><span>연남 · 베이커리 26평</span></a></li>
+    <li data-jd-type="dining" data-jd-size="m"><a href="#jd-no33"><img data-jd-src="p04-euljiro-dining.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p04-euljiro-dining.jpg" alt="" loading="lazy"><b>지붕</b><span>을지로 · 한식 다이닝 34평</span></a></li>
+    <li data-jd-type="retail" data-jd-size="l"><a href="#jd-no30"><img data-jd-src="p05-dosan-showroom.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p05-dosan-showroom.jpg" alt="" loading="lazy"><b>포르마 쇼룸</b><span>도산 · 가구 쇼룸 58평</span></a></li>
+    <li data-jd-type="cafe" data-jd-size="s"><a href="#jd-no38"><img data-jd-src="p06-seochon-tearoom.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p06-seochon-tearoom.jpg" alt="" loading="lazy"><b>다실 무이</b><span>서촌 · 티룸 12평</span></a></li>
+  </ul>
+  <p class="jd-empty" id="jd-empty" hidden>이 조건에 맞는 사례는 아직 없어요. 비슷한 조건으로 상담해 드릴 수 있어요.</p>
+</section>
+
+<!-- ═ 사례 6 ═ -->
+<article class="jd-case" id="jd-no41" data-jd-type="cafe" data-jd-size="s">
+  <div class="jd-grid jd-case-top">
+    <header class="jd-case-head">
+      <p class="jd-case-no">No.41 · 2025.11 오픈</p>
+      <h2 class="jd-case-name">Orum Coffee</h2>
+      <p class="jd-case-ko">오름 커피 · 성수</p>
+      <dl class="jd-facts">
+        <div><dt>업종</dt><dd>카페 18평</dd></div>
+        <div><dt>걸린 날</dt><dd>24일</dd></div>
+        <div><dt>공사비</dt><dd>4,300만원</dd></div>
+        <div><dt>오픈일</dt><dd>11월 8일 · 약속한 날</dd></div>
+      </dl>
+    </header>
+    <figure class="jd-case-main jd-rv"><img data-jd-src="p01-seongsu-cafe.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p01-seongsu-cafe.jpg" alt="오름 커피, 석회 미장 바와 선형 펜던트" loading="lazy"></figure>
+  </div>
+  <div class="jd-grid jd-case-body">
+    <div class="jd-case-txt">
+      <p class="jd-ask">“혼자 운영할 거라, 바 안에서 매장 전체가 보였으면 좋겠어요.”</p>
+      <p>바를 벽에 붙이지 않고 매장 가운데로 뺐어요. <br>에스프레소 머신 앞에 서면 입구와 좌석이 한 번에 보여요. <br>벽은 석회 미장이라 조명이 번들거리지 않고 부드럽게 퍼져요.</p>
+      <p class="jd-fixed"><span>30일 점검</span>창가 긴 의자 쿠션이 자꾸 밀려서 뒷면에 미끄럼 방지 패드를 붙였어요.</p>
+    </div>
+    <figure class="jd-rv"><img data-jd-src="p01b-cafe-counter.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p01b-cafe-counter.jpg" alt="석회 미장 바 모서리와 에스프레소 머신" loading="lazy"></figure>
+    <figure class="jd-rv"><img data-jd-src="p01c-cafe-window.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p01c-cafe-window.jpg" alt="창가 오크 벤치 좌석" loading="lazy"></figure>
+  </div>
+</article>
+
+<article class="jd-case" id="jd-no37" data-jd-type="dining" data-jd-size="m">
+  <div class="jd-grid jd-case-top">
+    <header class="jd-case-head">
+      <p class="jd-case-no">No.37 · 2025.09 오픈</p>
+      <h2 class="jd-case-name">Bar Sol</h2>
+      <p class="jd-case-ko">바 솔 · 한남</p>
+      <dl class="jd-facts">
+        <div><dt>업종</dt><dd>와인바 22평</dd></div>
+        <div><dt>걸린 날</dt><dd>31일 · 전부 야간</dd></div>
+        <div><dt>공사비</dt><dd>6,100만원</dd></div>
+        <div><dt>오픈일</dt><dd>9월 19일 · 약속한 날</dd></div>
+      </dl>
+    </header>
+    <figure class="jd-case-main jd-rv"><img data-jd-src="p02-hannam-bar.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p02-hannam-bar.jpg" alt="바 솔, 녹회색 석재 바와 와인 벽" loading="lazy"></figure>
+  </div>
+  <div class="jd-grid jd-case-body">
+    <div class="jd-case-txt">
+      <p class="jd-ask">“같은 건물 1층 가게들이 낮에 영업해서, 공사는 밤에만 할 수 있대요.”</p>
+      <p>소리가 큰 철거는 첫 이틀 밤에 몰아서 끝냈어요. <br>그 전에 위층 세대에 일정표를 들고 먼저 인사드렸고요. <br>와인 벽은 선반 뒤에서 빛이 나오게 했어요. <br>라벨이 바래지 않게 자외선이 거의 없는 LED를 썼어요.</p>
+      <p class="jd-fixed"><span>30일 점검</span>바 의자가 카운터에 비해 높다고 하셔서 다리를 2cm 잘랐어요.</p>
+    </div>
+    <figure class="jd-rv"><img data-jd-src="p02b-bar-bottles.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p02b-bar-bottles.jpg" alt="뒤에서 빛나는 와인 선반과 황동 램프" loading="lazy"></figure>
+    <figure class="jd-rv"><img data-jd-src="p02c-bar-banquette.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p02c-bar-banquette.jpg" alt="버건디 가죽 벤치 좌석" loading="lazy"></figure>
+  </div>
+</article>
+
+<article class="jd-case" id="jd-no35" data-jd-type="cafe" data-jd-size="m">
+  <div class="jd-grid jd-case-top">
+    <header class="jd-case-head">
+      <p class="jd-case-no">No.35 · 2025.08 오픈</p>
+      <h2 class="jd-case-name">Mill &amp; Loaf</h2>
+      <p class="jd-case-ko">밀앤로프 · 연남</p>
+      <dl class="jd-facts">
+        <div><dt>업종</dt><dd>베이커리 26평</dd></div>
+        <div><dt>걸린 날</dt><dd>29일</dd></div>
+        <div><dt>공사비</dt><dd>7,400만원</dd></div>
+        <div><dt>오픈일</dt><dd>8월 2일 · 약속한 날</dd></div>
+      </dl>
+    </header>
+    <figure class="jd-case-main jd-rv"><img data-jd-src="p03-yeonnam-bakery.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p03-yeonnam-bakery.jpg" alt="밀앤로프, 테라초 바닥과 유리 쇼케이스" loading="lazy"></figure>
+  </div>
+  <div class="jd-grid jd-case-body">
+    <div class="jd-case-txt">
+      <p class="jd-ask">“빵 굽는 모습이 밖에서도 보였으면 좋겠어요.”</p>
+      <p>오븐을 창가로 옮기면 배기 덕트를 새로 뽑아야 했어요. <br>1,200만원이 더 드는 방법이라 오븐은 그대로 뒀어요. <br>대신 쇼케이스와 주방 사이 벽을 유리로 바꿨어요. <br>입구에서 오븐까지 한눈에 보여요.</p>
+      <p class="jd-fixed"><span>30일 점검</span>쇼케이스 조명이 너무 노래서 빵 색이 탁해 보였어요. <br>색온도를 3000K로 바꿨어요.</p>
+    </div>
+    <figure class="jd-rv"><img data-jd-src="p03b-bakery-case.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p03b-bakery-case.jpg" alt="안에서 불이 켜진 빈 쇼케이스" loading="lazy"></figure>
+    <figure class="jd-rv"><img data-jd-src="p03c-bakery-kitchen.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p03c-bakery-kitchen.jpg" alt="데크 오븐이 있는 오픈 주방" loading="lazy"></figure>
+  </div>
+</article>
+
+<article class="jd-case" id="jd-no33" data-jd-type="dining" data-jd-size="m">
+  <div class="jd-grid jd-case-top">
+    <header class="jd-case-head">
+      <p class="jd-case-no">No.33 · 2025.06 오픈</p>
+      <h2 class="jd-case-name">Jibung</h2>
+      <p class="jd-case-ko">지붕 · 을지로</p>
+      <dl class="jd-facts">
+        <div><dt>업종</dt><dd>한식 다이닝 34평</dd></div>
+        <div><dt>걸린 날</dt><dd>38일</dd></div>
+        <div><dt>공사비</dt><dd>1억 900만원</dd></div>
+        <div class="jd-late"><dt>오픈일</dt><dd>6월 27일 · 9일 늦음</dd></div>
+      </dl>
+    </header>
+    <figure class="jd-case-main jd-rv"><img data-jd-src="p04-euljiro-dining.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p04-euljiro-dining.jpg" alt="지붕, 노출 벽돌과 12석 카운터" loading="lazy"></figure>
+  </div>
+  <div class="jd-grid jd-case-body">
+    <div class="jd-case-txt">
+      <p class="jd-ask">“1970년대 건물 느낌은 그대로 살리고 싶어요.”</p>
+      <p>벽돌과 기둥은 뜯지 않고, 먼지만 날리지 않게 코팅했어요. <br>12석 카운터는 이음매 없는 통원목으로 짰어요.</p>
+      <p>작년에 유일하게 오픈일을 넘긴 곳이에요. <br>주방 바닥에 깔 수입 타일이 세관에서 9일 묶였어요. <br>타일이 깔려야 설비가 들어갈 수 있어서 날짜를 지키지 못했어요. <br>그 9일 치 월세는 공사비에서 뺐어요.</p>
+      <p class="jd-fixed"><span>30일 점검</span>카운터 끝자리까지 음식이 식지 않게 패스 쪽 보온 램프를 하나 더 달았어요.</p>
+    </div>
+    <figure class="jd-rv"><img data-jd-src="p04b-dining-setting.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p04b-dining-setting.jpg" alt="원목 카운터 위 청자 그릇 한 자리" loading="lazy"></figure>
+    <figure class="jd-rv"><img data-jd-src="p04c-dining-room.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p04c-dining-room.jpg" alt="한지 창호가 빛나는 룸" loading="lazy"></figure>
+  </div>
+</article>
+
+<article class="jd-case" id="jd-no30" data-jd-type="retail" data-jd-size="l">
+  <div class="jd-grid jd-case-top">
+    <header class="jd-case-head">
+      <p class="jd-case-no">No.30 · 2025.05 오픈</p>
+      <h2 class="jd-case-name">Forma</h2>
+      <p class="jd-case-ko">포르마 쇼룸 · 도산</p>
+      <dl class="jd-facts">
+        <div><dt>업종</dt><dd>가구 쇼룸 58평</dd></div>
+        <div><dt>걸린 날</dt><dd>33일</dd></div>
+        <div><dt>공사비</dt><dd>1억 2,800만원</dd></div>
+        <div><dt>오픈일</dt><dd>5월 15일 · 약속한 날</dd></div>
+      </dl>
+    </header>
+    <figure class="jd-case-main jd-rv"><img data-jd-src="p05-dosan-showroom.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p05-dosan-showroom.jpg" alt="포르마 쇼룸, 흰 좌대와 스폿 조명" loading="lazy"></figure>
+  </div>
+  <div class="jd-grid jd-case-body">
+    <div class="jd-case-txt">
+      <p class="jd-ask">“시즌마다 가구 배치를 바꿔요. 그때마다 공사할 순 없잖아요.”</p>
+      <p>좌대는 바닥에 고정하지 않고, 두 사람이 옮길 수 있는 무게로 만들었어요. <br>천장에는 레일을 격자로 깔고 스폿 조명 36개를 달았어요. <br>가구를 어디에 두든 비출 수 있어요.</p>
+      <p class="jd-fixed"><span>30일 점검</span>저녁에 큰 창에 조명이 비쳐서 밖에서 안이 잘 안 보였어요. <br>창가 스폿 두 개 각도를 틀었어요.</p>
+    </div>
+    <figure class="jd-rv"><img data-jd-src="p05b-showroom-chair.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p05b-showroom-chair.jpg" alt="좌대 위 오크 라운지 체어" loading="lazy"></figure>
+    <figure class="jd-rv"><img data-jd-src="p05c-showroom-window.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p05c-showroom-window.jpg" alt="밤거리를 향한 쇼룸 큰 창" loading="lazy"></figure>
+  </div>
+</article>
+
+<article class="jd-case" id="jd-no38" data-jd-type="cafe" data-jd-size="s">
+  <div class="jd-grid jd-case-top">
+    <header class="jd-case-head">
+      <p class="jd-case-no">No.38 · 2025.10 오픈</p>
+      <h2 class="jd-case-name">Mui Tea</h2>
+      <p class="jd-case-ko">다실 무이 · 서촌</p>
+      <dl class="jd-facts">
+        <div><dt>업종</dt><dd>티룸 12평</dd></div>
+        <div><dt>걸린 날</dt><dd>19일</dd></div>
+        <div><dt>공사비</dt><dd>2,600만원</dd></div>
+        <div><dt>오픈일</dt><dd>10월 3일 · 약속한 날</dd></div>
+      </dl>
+    </header>
+    <figure class="jd-case-main jd-rv"><img data-jd-src="p06-seochon-tearoom.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p06-seochon-tearoom.jpg" alt="다실 무이, 소나무 카운터와 창호" loading="lazy"></figure>
+  </div>
+  <div class="jd-grid jd-case-body">
+    <div class="jd-case-txt">
+      <p class="jd-ask">“자리가 여덟 개뿐이라, 한 자리 한 자리가 편했으면 해요.”</p>
+      <p>카운터를 보통보다 5cm 낮췄어요. <br>앉은 손님 눈높이에서 차 우리는 손이 보여요. <br>창호지 뒤에 조명을 숨겨서, 밤에도 은은한 빛이 들어오는 것처럼 했어요.</p>
+      <p class="jd-fixed"><span>30일 점검</span>픽업대 위치, 창가 조도, 전기 회로, 수납장 높이까지 네 군데를 고쳤어요.</p>
+    </div>
+    <figure class="jd-rv"><img data-jd-src="p06b-tearoom-tray.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p06b-tearoom-tray.jpg" alt="무쇠 주전자와 찻잔 세 개" loading="lazy"></figure>
+    <figure class="jd-rv"><img data-jd-src="p06c-tearoom-door.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p06c-tearoom-door.jpg" alt="골목에서 본 다실 입구" loading="lazy"></figure>
+  </div>
+</article>
+
+<!-- ═ 상담 ═ -->
+<section class="jd-sec jd-cta" id="jd-cta">
+  <div class="jd-grid">
+    <p class="jd-label">상담</p>
+    <h2 class="jd-cta-h jd-lr">비슷한 가게를 <br>준비하고 계신가요?</h2>
+    <p class="jd-lead jd-lr">규모가 비슷한 가게가 어디에 돈을 많이 썼는지 항목별로 보여드릴게요. <br>“○○ 같은 느낌으로요.” 이 한마디로 시작해도 돼요.</p>
+    <div class="jd-cta-act">
+      <a class="jd-btn jd-btn-warm" href="/contact" data-jd-page="contact"><i class="jd-dot"></i>오픈 상담 신청</a>
+      <a class="jd-btn" href="/process" data-jd-page="process">진행 · 비용 보기 <i>→</i></a>
+    </div>
+  </div>
+</section>
+
+<footer class="jd-foot">
+  <div class="jd-grid jd-foot-row">
+    <span>점등 · 간판에 불이 켜지는 날까지</span>
+    <span>서울 성동구 연무장7길 11, 2층</span>
+    <span>open@jeomdeung.kr</span>
+    <span>인스타그램 @jeomdeung.studio</span>
+  </div>
+  <p class="jd-foot-mark" aria-hidden="true">JEOMDEUNG</p>
+</footer>
+
+</div>

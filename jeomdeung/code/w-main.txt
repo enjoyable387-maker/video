@@ -1,0 +1,179 @@
+<!-- ④ Main 페이지 위젯 — 아임웹 페이지 주소 / -->
+<div class="jd jd-page" data-jd-key="main">
+
+<!-- ═ 히어로: 무엇을 하는 곳인지 + 사장님이 제일 궁금한 세 가지 + 바로 누를 버튼 ═ -->
+<section class="jd-hero" id="jd-hero">
+  <picture class="jd-hero-img">
+    <source media="(max-width: 560px)" data-jd-srcset="hero-m.jpg" srcset="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/hero-m.jpg">
+    <source media="(max-width: 1024px) and (orientation: portrait)" data-jd-srcset="hero-t.jpg" srcset="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/hero-t.jpg">
+    <img data-jd-src="hero-d.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/hero-d.jpg" alt="해 질 녘, 조명이 켜진 카페의 통유리 전면과 트래버틴 바" fetchpriority="high">
+  </picture>
+  <div class="jd-hero-in">
+    <p class="jd-hero-kicker"><i class="jd-dot"></i>카페 · 식당 · 바 · 쇼룸 인테리어</p>
+    <h1 class="jd-hero-h jd-lr">오픈 날짜부터 정하고 <br>공사를 시작해요.</h1>
+    <p class="jd-hero-sub jd-lr">평면도 한 장, 매장 사진 서너 장이면 충분해요. <br>오늘 보내주시면 내일 오전까지 예상 공사비와 기간을 정리해 드려요.</p>
+    <div class="jd-hero-act">
+      <a class="jd-btn jd-btn-warm" href="/contact" data-jd-page="contact"><i class="jd-dot"></i>오픈 상담 신청</a>
+      <a class="jd-btn jd-btn-glass" href="https://pf.kakao.com/" target="_blank" rel="noopener">카톡으로 사진 보내기</a>
+    </div>
+    <dl class="jd-hero-facts">
+      <div><dt>평당 공사비</dt><dd>180~320만원</dd></div>
+      <div><dt>공사 기간</dt><dd>보통 3~6주</dd></div>
+      <div><dt>상담 답장</dt><dd>평일 2시간 안</dd></div>
+    </dl>
+    <p class="jd-hero-note">2025년에 문 연 41곳 기준이에요. 철거 · 간판 · 주방기기 구입비는 빠져 있어요.</p>
+  </div>
+</section>
+
+<!-- ═ 자주 묻는 질문: 멈칫하는 지점을 먼저 풀어 준다 ═ -->
+<section class="jd-sec jd-faq" id="jd-faq">
+  <div class="jd-grid">
+    <p class="jd-label">첫 상담에서 나오는 질문</p>
+    <h2 class="jd-h2 jd-lr">상담 오시면 제일 먼저 <br>물어보시는 네 가지예요.</h2>
+  </div>
+  <ol class="jd-qa">
+    <li class="jd-q jd-rv">
+      <h3 class="jd-q-t">“20평이면 얼마쯤이에요?”</h3>
+      <p class="jd-q-a">카페라면 4,000만~5,500만원 사이가 제일 많아요. <br>주방 설비를 새로 넣는지, 바닥을 뜯는지에서 크게 갈려요.</p>
+      <p class="jd-q-proof">작년 카페 14곳 평균 4,620만원</p>
+    </li>
+    <li class="jd-q jd-rv">
+      <h3 class="jd-q-t">“오픈 날짜 맞출 수 있어요?”</h3>
+      <p class="jd-q-a">계약서에 오픈일을 날짜로 적어요. <br>저희 사정으로 늦어지면, 늦어진 날만큼 월세를 공사비에서 빼드려요.</p>
+      <p class="jd-q-proof">작년 41곳 중 1곳이 늦었어요</p>
+    </li>
+    <li class="jd-q jd-rv">
+      <h3 class="jd-q-t">“영업 중인데 가게 닫아야 해요?”</h3>
+      <p class="jd-q-a">리뉴얼은 밤 10시부터 아침 7시까지만 공사해요. <br>아침에 문 여실 때는 먼지 없이 정리해 두고 나와요.</p>
+      <p class="jd-q-proof">리뉴얼 16곳 중 14곳은 하루도 안 쉬었어요</p>
+    </li>
+    <li class="jd-q jd-rv">
+      <h3 class="jd-q-t">“오픈하고 불편한 게 생기면요?”</h3>
+      <p class="jd-q-a">오픈 30일째 되는 날 다시 가서 같이 봐요. <br>손님이 실제로 움직이는 걸 봐야 보이는 게 있거든요.</p>
+      <p class="jd-q-proof">매장마다 평균 4군데를 더 손봤어요</p>
+    </li>
+  </ol>
+</section>
+
+<!-- ═ 시공 사례 ═ -->
+<section class="jd-sec jd-work" id="jd-work">
+  <div class="jd-grid jd-work-head">
+    <p class="jd-label">시공 사례</p>
+    <h2 class="jd-h2 jd-lr">지금 영업 중인 <br>가게들이에요.</h2>
+    <p class="jd-lead jd-lr">사진은 전부 오픈 전날 밤에 찍었어요. <br>조명만 켜 둔 상태가 공간을 제일 솔직하게 보여주거든요.</p>
+    <div class="jd-filter" id="jd-filter" role="group" aria-label="업종으로 거르기">
+      <button type="button" data-jd-f="all" aria-pressed="true">전체</button>
+      <button type="button" data-jd-f="cafe" aria-pressed="false">카페 · 베이커리</button>
+      <button type="button" data-jd-f="dining" aria-pressed="false">식당 · 바</button>
+      <button type="button" data-jd-f="retail" aria-pressed="false">쇼룸</button>
+    </div>
+  </div>
+  <ul class="jd-list" id="jd-list"></ul>
+  <div class="jd-grid jd-work-more"><a class="jd-btn" href="/projects" data-jd-page="projects">여섯 곳 자세히 보기 <i>→</i></a></div>
+</section>
+
+<!-- ═ 작년 기록 ═ -->
+<section class="jd-sec jd-nums" id="jd-nums">
+  <div class="jd-grid">
+    <p class="jd-label">2025년 기록</p>
+    <h2 class="jd-h2 jd-lr">작년에 문 연 가게, <br>숫자로 정리했어요.</h2>
+  </div>
+  <dl class="jd-num-row">
+    <div class="jd-num jd-rv"><dt>오픈한 가게</dt><dd><b data-jd-count="41">41</b><small>곳</small></dd></div>
+    <div class="jd-num jd-rv"><dt>약속보다 늦게 연 곳</dt><dd><b data-jd-count="1">1</b><small>곳</small></dd></div>
+    <div class="jd-num jd-rv"><dt>착공부터 오픈까지</dt><dd><b data-jd-count="27">27</b><small>일</small></dd></div>
+    <div class="jd-num jd-rv"><dt>밤에 한 공사</dt><dd><b data-jd-count="38">38</b><small>%</small></dd></div>
+  </dl>
+  <div class="jd-grid">
+    <p class="jd-num-note jd-rv">늦게 연 1곳은 을지로 ‘지붕’이에요. <br>수입 타일이 세관에서 9일 묶였고, 그 9일 치 월세는 공사비에서 뺐어요.</p>
+  </div>
+</section>
+
+<!-- ═ 진행 순서: 오픈일에서 거꾸로 ═ -->
+<section class="jd-sec jd-count" id="jd-count">
+  <div class="jd-grid">
+    <p class="jd-label">진행 순서</p>
+    <h2 class="jd-h2 jd-lr">오픈일에서 거꾸로 세어 <br>일정을 짜요.</h2>
+    <p class="jd-lead jd-lr">첫 미팅 때 달력부터 펴요. <br>오픈일에 동그라미를 치고, 거기서부터 거꾸로 채워 나가요.</p>
+  </div>
+  <div class="jd-tl-wrap">
+    <ol class="jd-tl" id="jd-tl">
+      <li><b>D-45</b><span>처음 만나는 날. <br>실측하고 오픈일부터 정해요</span></li>
+      <li><b>D-38</b><span>도면 확정. <br>오픈일을 계약서에 적어요</span></li>
+      <li><b>D-32</b><span>전기 증설 · 가스 · <br>영업신고 준비</span></li>
+      <li><b>D-28</b><span>착공. 월 · 목요일마다 <br>1분짜리 현장 영상 발송</span></li>
+      <li><b>D-12</b><span>주방 설비랑 <br>가구가 들어와요</span></li>
+      <li><b>D-5</b><span>자리마다 <br>조명 밝기를 맞춰요</span></li>
+      <li><b>D-2</b><span>머신 · 오븐 시운전, <br>마지막 청소</span></li>
+      <li class="jd-tl-on"><b>D-0</b><span>간판에 불 켜는 날</span></li>
+    </ol>
+  </div>
+  <div class="jd-grid jd-work-more"><a class="jd-btn" href="/process" data-jd-page="process">45일 일정이랑 비용 보기 <i>→</i></a></div>
+</section>
+
+<!-- ═ 오픈 30일 점검 ═ -->
+<section class="jd-sec jd-after" id="jd-after">
+  <div class="jd-grid">
+    <p class="jd-label">오픈 30일 점검</p>
+    <figure class="jd-after-img jd-rv"><img data-jd-src="p06-seochon-tearoom.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/p06-seochon-tearoom.jpg" alt="서촌 다실 무이, 불이 켜진 소나무 다실 카운터" loading="lazy"><figcaption>서촌 다실 무이 · 12평 · 공사 19일</figcaption></figure>
+    <div class="jd-after-txt">
+      <h2 class="jd-h2 jd-lr">한 달 영업해 보고 <br>다시 손봐요.</h2>
+      <p class="jd-lead jd-lr">다실 무이는 오픈 30일째에 네 군데를 손봤어요.</p>
+      <ul class="jd-fix">
+        <li class="jd-rv"><span>동선</span>픽업대를 입구 쪽으로 1.2m 당겼어요. 기다리는 줄이 좌석을 막았거든요.</li>
+        <li class="jd-rv"><span>조명</span>창가 두 자리는 눈이 부시다고 하셔서 조금 어둡게 바꿨어요.</li>
+        <li class="jd-rv"><span>전기</span>포트 두 대를 같이 켜면 차단기가 내려가서 회로를 나눴어요.</li>
+        <li class="jd-rv"><span>수납</span>찻잎 보관장을 손이 닿는 높이로 내렸어요.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═ 사장님 후기 ═ -->
+<section class="jd-sec jd-voice" id="jd-voice">
+  <div class="jd-grid">
+    <p class="jd-label">사장님 후기</p>
+    <h2 class="jd-h2 jd-lr">먼저 문 연 사장님들이 <br>해주신 이야기예요.</h2>
+  </div>
+  <div class="jd-voices">
+    <figure class="jd-v jd-rv">
+      <blockquote>오픈일을 계약서에 박아 준다길래 반신반의했어요. 인테리어 때문에 오픈을 두 번 미룬 선배 얘기를 들었거든요. 11월 8일, 적힌 날 그대로 문 열었어요.</blockquote>
+      <figcaption><b>오름 커피 사장님</b>성수 · 카페 18평</figcaption>
+    </figure>
+    <figure class="jd-v jd-rv">
+      <blockquote>밤에만 공사한다고 해서 소음 민원이 걱정이었는데, 공사 전에 위층 분들께 먼저 인사를 다녀오셨더라고요.</blockquote>
+      <figcaption><b>바 솔 사장님</b>한남 · 와인바 22평</figcaption>
+    </figure>
+    <figure class="jd-v jd-rv">
+      <blockquote>오픈하고 3주쯤 지나니까 불편한 게 보이기 시작했어요. 말씀드리기 전에 먼저 연락이 왔어요.</blockquote>
+      <figcaption><b>다실 무이 사장님</b>서촌 · 티룸 12평</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ═ 상담 ═ -->
+<section class="jd-sec jd-cta" id="jd-cta">
+  <div class="jd-grid">
+    <p class="jd-label">상담</p>
+    <h2 class="jd-cta-h jd-lr">문 열 날짜, <br>먼저 들려주세요.</h2>
+    <p class="jd-lead jd-lr">그 날짜가 넉넉한지 빠듯한지부터 솔직하게 답해 드릴게요. <br>아직 자리를 고르는 중이라면 도장 찍기 전에 같이 가 봐요. 전기 용량이랑 배수만 봐도 공사비가 크게 갈리거든요.</p>
+    <div class="jd-cta-act">
+      <a class="jd-btn jd-btn-warm" href="/contact" data-jd-page="contact"><i class="jd-dot"></i>오픈 상담 신청</a>
+      <a class="jd-btn" href="https://pf.kakao.com/" target="_blank" rel="noopener">카톡 @jeomdeung</a>
+      <a class="jd-btn" href="tel:0269530917">02-6953-0917</a>
+    </div>
+    <p class="jd-cta-hours">평일 오전 10시부터 저녁 7시까지 윤서진 실장이 직접 받아요.</p>
+  </div>
+</section>
+
+<footer class="jd-foot">
+  <div class="jd-grid jd-foot-row">
+    <span>점등 · 간판에 불이 켜지는 날까지</span>
+    <span>서울 성동구 연무장7길 11, 2층</span>
+    <span>open@jeomdeung.kr</span>
+    <span>인스타그램 @jeomdeung.studio</span>
+  </div>
+  <p class="jd-foot-mark" aria-hidden="true">JEOMDEUNG</p>
+</footer>
+
+</div>

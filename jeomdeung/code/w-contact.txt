@@ -1,0 +1,78 @@
+<!-- ④ Contact 페이지 위젯 — 아임웹 페이지 주소 /contact -->
+<div class="jd jd-page jd-sub" data-jd-key="contact">
+
+<section class="jd-sec jd-head jd-contact" id="jd-top">
+  <div class="jd-grid">
+    <p class="jd-label">상담 신청</p>
+    <h1 class="jd-h1 jd-lr">문 열 날부터 <br>적어 주세요.</h1>
+    <p class="jd-lead jd-lr">빈칸이 많아도 괜찮아요. 나머지는 통화하면서 여쭤볼게요. <br>평일에는 보통 2시간 안에 윤서진 실장이 전화드려요.</p>
+  </div>
+
+  <div class="jd-grid jd-contact-wrap">
+    <form class="jd-form jd-rv" id="jd-form" novalidate>
+      <fieldset class="jd-f">
+        <legend>업종</legend>
+        <div class="jd-chips">
+          <input type="radio" name="jd-type" id="jd-t1" value="카페 · 베이커리" checked><label for="jd-t1">카페 · 베이커리</label>
+          <input type="radio" name="jd-type" id="jd-t2" value="식당"><label for="jd-t2">식당</label>
+          <input type="radio" name="jd-type" id="jd-t3" value="바 · 주점"><label for="jd-t3">바 · 주점</label>
+          <input type="radio" name="jd-type" id="jd-t4" value="쇼룸 · 매장"><label for="jd-t4">쇼룸 · 매장</label>
+          <input type="radio" name="jd-type" id="jd-t5" value="기타"><label for="jd-t5">기타</label>
+        </div>
+      </fieldset>
+      <fieldset class="jd-f">
+        <legend>자리는 어떤 상태인가요?</legend>
+        <div class="jd-chips">
+          <input type="radio" name="jd-state" id="jd-s1" value="아직 자리를 보는 중" checked><label for="jd-s1">아직 보는 중</label>
+          <input type="radio" name="jd-state" id="jd-s2" value="임대 계약 완료"><label for="jd-s2">계약했어요</label>
+          <input type="radio" name="jd-state" id="jd-s3" value="영업 중 리뉴얼"><label for="jd-s3">영업 중 리뉴얼</label>
+        </div>
+      </fieldset>
+      <div class="jd-f-row">
+        <div class="jd-f"><label for="jd-size">평수</label><input id="jd-size" type="text" inputmode="numeric" placeholder="예: 20평"></div>
+        <div class="jd-f"><label for="jd-date">오픈 예정일</label><input id="jd-date" type="text" placeholder="예: 12월 중순"></div>
+      </div>
+      <div class="jd-f-row">
+        <div class="jd-f"><label for="jd-area">지역</label><input id="jd-area" type="text" placeholder="예: 성수동"></div>
+        <div class="jd-f"><label for="jd-name">성함</label><input id="jd-name" type="text" autocomplete="name"></div>
+      </div>
+      <div class="jd-f"><label for="jd-tel">연락처 <em>필수</em></label><input id="jd-tel" type="tel" autocomplete="tel" placeholder="010-0000-0000" required></div>
+      <div class="jd-f"><label for="jd-memo">남기실 말씀</label><textarea id="jd-memo" rows="4" placeholder="참고하고 싶은 가게나, 걱정되는 점을 편하게 적어 주세요."></textarea></div>
+      <p class="jd-form-note">매장 사진이나 평면도는 카톡 @jeomdeung 으로 보내주시면 더 정확하게 말씀드릴 수 있어요.</p>
+      <button class="jd-btn jd-btn-warm jd-submit" type="submit"><i class="jd-dot"></i>이대로 보내기</button>
+      <p class="jd-form-msg" id="jd-form-msg" aria-live="polite"></p>
+    </form>
+
+    <aside class="jd-contact-side">
+      <figure class="jd-rv"><img data-jd-src="ct-studio.jpg" src="https://cdn.jsdelivr.net/gh/enjoyable387-maker/video@main/jeomdeung/ct-studio.jpg" alt="성수동 점등 사무실, 긴 작업 테이블과 마감재 샘플" loading="lazy"><figcaption>성수동 사무실 · 방문 상담은 미리 연락 주세요</figcaption></figure>
+      <dl class="jd-info">
+        <div><dt>전화</dt><dd><a href="tel:0269530917">02-6953-0917</a></dd></div>
+        <div><dt>카톡</dt><dd><a href="https://pf.kakao.com/" target="_blank" rel="noopener">@jeomdeung</a></dd></div>
+        <div><dt>메일</dt><dd>open@jeomdeung.kr</dd></div>
+        <div><dt>통화 가능</dt><dd>평일 10시~19시</dd></div>
+        <div><dt>주소</dt><dd>서울 성동구 연무장7길 11, 2층</dd></div>
+      </dl>
+      <div class="jd-next">
+        <h2 class="jd-h3">보내시면 이렇게 진행돼요</h2>
+        <ol>
+          <li><b>1</b>다음 영업일까지 전화드려요. 날짜가 맞는지부터요</li>
+          <li><b>2</b>매장에 같이 가서 실측해요. 여기까지는 비용이 없어요</li>
+          <li><b>3</b>일주일 안에 도면 초안과 견적서를 드려요</li>
+          <li><b>4</b>마음에 드시면 오픈일을 적고 계약해요</li>
+        </ol>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<footer class="jd-foot">
+  <div class="jd-grid jd-foot-row">
+    <span>점등 · 간판에 불이 켜지는 날까지</span>
+    <span>서울 성동구 연무장7길 11, 2층</span>
+    <span>open@jeomdeung.kr</span>
+    <span>인스타그램 @jeomdeung.studio</span>
+  </div>
+  <p class="jd-foot-mark" aria-hidden="true">JEOMDEUNG</p>
+</footer>
+
+</div>

@@ -1,0 +1,287 @@
+<!-- ③ 스크립트 — 고칠 것 없음 -->
+<script>
+/* 점등 — 스크립트 원본 (src/jd.js)
+   아임웹에서는 공통 코드 › Footer 에, 로컬 미리보기에서는 페이지 끝에서 실행된다.
+   전역은 window.JD 하나. 설정은 window.JD_CONFIG (1_설정) 에서 읽는다.
+   스크립트 안에 HTML 문자 참조 금지(아임웹이 풀어 버림). */
+(function () {
+  if (window.JD && window.JD.ready) return;          // 중복 삽입 방지
+  var JD = window.JD = { ready: true };
+  var cfg = JD.cfg = window.JD_CONFIG || {};
+  var pages = cfg.pages || { main: 'index.html', projects: 'projects.html', process: 'process.html', contact: 'contact.html' };
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var html = document.documentElement;
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+  var clamp = function (v, a, b) { return Math.min(Math.max(v, a), b); };
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var media = function (name) { return (cfg.media && cfg.media[name]) || (cfg.mediaBase || 'media/') + name; };
+
+  /* 불을 켠 곳들 — 메인 목록과 Projects 가 같이 쓴다 */
+  var PROJECTS = [
+    { no: 'No.41', en: 'Orum Coffee', ko: '오름 커피', area: '성수', type: 'cafe', kind: '카페', py: 18, days: 24, cost: '4,300만원', open: '2025.11.08', img: 'p01-seongsu-cafe.jpg' },
+    { no: 'No.37', en: 'Bar Sol', ko: '바 솔', area: '한남', type: 'dining', kind: '와인바', py: 22, days: 31, cost: '6,100만원', open: '2025.09.19', img: 'p02-hannam-bar.jpg' },
+    { no: 'No.35', en: 'Mill & Loaf', ko: '밀앤로프', area: '연남', type: 'cafe', kind: '베이커리', py: 26, days: 29, cost: '7,400만원', open: '2025.08.02', img: 'p03-yeonnam-bakery.jpg' },
+    { no: 'No.33', en: 'Jibung', ko: '지붕', area: '을지로', type: 'dining', kind: '한식 다이닝', py: 34, days: 38, cost: '1억 900만원', open: '2025.06.27', img: 'p04-euljiro-dining.jpg' },
+    { no: 'No.30', en: 'Forma', ko: '포르마 쇼룸', area: '도산', type: 'retail', kind: '가구 쇼룸', py: 58, days: 33, cost: '1억 2,800만원', open: '2025.05.15', img: 'p05-dosan-showroom.jpg' },
+    { no: 'No.38', en: 'Mui Tea', ko: '다실 무이', area: '서촌', type: 'cafe', kind: '티룸', py: 12, days: 19, cost: '2,600만원', open: '2025.10.03', img: 'p06-seochon-tearoom.jpg' }
+  ];
+
+  /* 아임웹 기본 헤더·푸터 숨김 */
+  function hideHost() {
+    if (!cfg.hide || !cfg.hide.length || document.getElementById('jd-hide')) return;
+    var st = document.createElement('style');
+    st.id = 'jd-hide';
+    st.textContent = cfg.hide.join(',') + '{display:none!important}';
+    document.head.appendChild(st);
+  }
+
+  /* 스크롤 고정(sticky) 을 막는 부모의 overflow 를 푼다 — 아임웹 섹션은 대개 overflow:hidden */
+  function freeOverflow(root) {
+    for (var n = root.parentElement; n && n !== document.body && n !== html; n = n.parentElement) {
+      var cs = getComputedStyle(n);
+      if (cs.overflow !== 'visible' || cs.overflowX !== 'visible' || cs.overflowY !== 'visible') n.style.overflow = 'visible';
+    }
+  }
+
+  /* 헤더 — 아임웹 섹션의 transform 에 갇히지 않게 body 에 직접 붙인다 */
+  function chrome(key) {
+    var items = [['main', '홈'], ['projects', '시공 사례'], ['process', '진행 · 비용'], ['contact', '상담 신청']];
+    var links = items.map(function (it) {
+      return '<a href="' + pages[it[0]] + '"' + (it[0] === key ? ' aria-current="page"' : '') + '>' + it[1] + '</a>';
+    }).join('');
+    var wrap = document.createElement('div');
+    wrap.className = 'jd jd-chrome';
+    wrap.innerHTML = '<header class="jd-hdr" id="jd-hdr">' +
+      '<a class="jd-logo" href="' + pages.main + '" aria-label="점등 — 홈">Jeomdeung</a>' +
+      '<nav class="jd-nav" aria-label="주 메뉴">' + links + '</nav>' +
+      '<div class="jd-hdr-right"><a class="jd-hdr-cta" href="' + pages.contact + '"><i class="jd-dot"></i>오픈 상담</a>' +
+      '<button class="jd-burger" id="jd-burger" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="jd-drawer"><i></i><i></i></button></div></header>' +
+      '<div class="jd-drawer" id="jd-drawer"><nav aria-label="모바일 메뉴">' + links + '</nav>' +
+      '<p>평일 10시~19시 · 02-6953-0917<br>카톡 @jeomdeung</p></div>' +
+      (key === 'contact' ? '' : '<div class="jd-bar" id="jd-bar"><a href="' + pages.contact + '">오픈 상담 신청</a><a href="tel:0269530917">전화하기</a></div>');
+    document.body.appendChild(wrap);
+    var hdr = $('#jd-hdr'), bar = $('#jd-bar'), burger = $('#jd-burger'), drawer = $('#jd-drawer');
+    burger.addEventListener('click', function () {
+      var open = burger.getAttribute('aria-expanded') !== 'true';
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+      drawer.classList.toggle('jd-open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    var onScroll = function () {
+      hdr.classList.toggle('jd-solid', scrollY > (document.querySelector('.jd-hero') ? innerHeight * 0.6 : 8));
+      var nearEnd = scrollY + innerHeight > document.documentElement.scrollHeight - 320;
+      if (bar) bar.classList.toggle('jd-up', scrollY > innerHeight * 0.8 && !nearEnd);
+    };
+    addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  }
+
+  /* 줄 단위 마스크 리빌 — 단어를 감싸고, 같은 줄끼리 같은 지연을 준다 */
+  function splitWords(el) {
+    var walk = function (node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+        if (n.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          n.nodeValue.split(/(\s+)/).forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            var w = document.createElement('span'); w.className = 'jd-w';
+            var i = document.createElement('span'); i.textContent = part;
+            w.appendChild(i); frag.appendChild(w);
+          });
+          n.parentNode.replaceChild(frag, n);
+        } else if (n.nodeType === 1 && n.tagName !== 'BR' && n.tagName !== 'CITE') walk(n);
+      });
+    };
+    walk(el);
+  }
+  var introOn = function () { return html.classList.contains('jd-intro-on'); };
+  function reveal(el) {
+    if (introOn()) { setTimeout(function () { reveal(el); }, 150); return; }
+    var top = null, line = -1;
+    $$('.jd-w', el).forEach(function (w) { var t = w.offsetTop; if (top === null || Math.abs(t - top) > 4) { line++; top = t; } w.style.setProperty('--l', line); });
+    requestAnimationFrame(function () { el.classList.add('jd-go'); });
+  }
+
+  /* 인트로: 어둠 → 한 점의 빛 → JEOMDEUNG 이 한 글자씩 켜짐 → 막이 걷히며 히어로 매장에 불이 들어옴 */
+  function intro() {
+    if (!introOn()) return;
+    try { sessionStorage.setItem('jd-intro', '1'); } catch (e) {}
+    html.classList.add('jd-lights-off');
+    var ov = document.createElement('div');
+    ov.className = 'jd jd-intro';
+    ov.innerHTML = '<i class="jd-intro-dot"></i><p class="jd-intro-word" aria-label="JEOMDEUNG">' +
+      'JEOMDEUNG'.split('').map(function (c) { return '<span>' + c + '</span>'; }).join('') +
+      '</p>';
+    document.body.appendChild(ov);
+    var dot = $('.jd-intro-dot', ov), letters = $$('.jd-intro-word span', ov);
+    var order = [4, 3, 5, 2, 6, 1, 7, 0, 8];               // 가운데 M 부터 바깥으로
+    setTimeout(function () { dot.classList.add('jd-on'); }, 250);
+    order.forEach(function (li, i) { setTimeout(function () { letters[li].classList.add('jd-on'); }, 1000 + i * 110); });
+    var done = function () {
+      if (!introOn()) return;
+      html.classList.remove('jd-intro-on');
+      ov.classList.add('jd-out');
+      setTimeout(function () { html.classList.remove('jd-lights-off'); }, 350);   // 막이 걷히는 동안 매장에 불이 켜짐
+      setTimeout(function () { if (ov.parentNode) ov.parentNode.removeChild(ov); }, 1400);
+    };
+    setTimeout(done, 3300);
+    setTimeout(done, 5200);                                  // 안전장치
+  }
+
+  function init(root) {
+    var key = root.getAttribute('data-jd-key') || 'main';
+    html.classList.add('jd-on');
+    hideHost();
+    freeOverflow(root);
+    chrome(key);
+    if (key === 'main') intro(); else html.classList.remove('jd-intro-on');
+    $$('[data-jd-src]', root).forEach(function (img) { img.src = media(img.getAttribute('data-jd-src')); });
+    $$('[data-jd-srcset]', root).forEach(function (so) { so.srcset = media(so.getAttribute('data-jd-srcset')); });
+    $$('[data-jd-page]', root).forEach(function (a) { a.href = pages[a.getAttribute('data-jd-page')] + (a.getAttribute('data-jd-hash') || ''); });
+
+    /* ── 프로젝트 목록 + 업종 필터 + 호버 사진 ── */
+    var list = $('#jd-list', root);
+    if (list) {
+      list.innerHTML = PROJECTS.map(function (p, i) {
+        return '<li class="jd-item" data-jd-type="' + p.type + '" data-jd-i="' + i + '"><a href="' + pages.projects + '#jd-' + p.no.replace('.', '').toLowerCase() + '">' +
+          '<img class="jd-item-thumb" src="' + media(p.img) + '" alt="" loading="lazy">' +
+          '<span class="jd-item-no">' + p.no + '</span>' +
+          '<span class="jd-item-name">' + p.en + '</span>' +
+          '<span class="jd-item-meta"><b>' + p.ko + ' · ' + p.area + '</b>' + p.kind + ' ' + p.py + '평 · 공사 ' + p.days + '일 · ' + p.cost + '</span></a></li>';
+      }).join('');
+      var items = $$('.jd-item', list);
+      var fl = $('#jd-filter', root);
+      if (fl) fl.addEventListener('click', function (ev) {
+        var b = ev.target.closest('button'); if (!b) return;
+        var f = b.getAttribute('data-jd-f');
+        $$('button', fl).forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        items.forEach(function (it) { it.classList.toggle('jd-hide', f !== 'all' && it.getAttribute('data-jd-type') !== f); });
+      });
+      if (matchMedia('(hover: hover) and (min-width: 561px)').matches) {
+        var fw = document.createElement('div');
+        fw.className = 'jd jd-float';
+        fw.innerHTML = PROJECTS.map(function (p) { return '<img src="' + media(p.img) + '" alt="">'; }).join('');
+        document.body.appendChild(fw);
+        var fimgs = $$('img', fw), mx = 0, my = 0, fx = 0, fy = 0, on = false, raf = 0;
+        var tick = function () {
+          fx = lerp(fx, mx, .14); fy = lerp(fy, my, .14);
+          var w = fw.offsetWidth, h = fw.offsetHeight;
+          fw.style.transform = 'translate3d(' + clamp(fx + 32, 0, innerWidth - w) + 'px,' + clamp(fy - h / 2, 0, innerHeight - h) + 'px,0)';
+          raf = on || Math.abs(fx - mx) > .5 ? requestAnimationFrame(tick) : 0;
+        };
+        list.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; if (!raf) raf = requestAnimationFrame(tick); });
+        items.forEach(function (it) {
+          it.addEventListener('mouseenter', function (e) {
+            if (!on) { fx = mx = e.clientX; fy = my = e.clientY; }
+            on = true; list.classList.add('jd-hovering');
+            items.forEach(function (x) { x.classList.toggle('jd-cur', x === it); });
+            var i = +it.getAttribute('data-jd-i');
+            fimgs.forEach(function (im, k) { im.classList.toggle('jd-on', k === i); });
+            fw.classList.add('jd-on');
+            if (!raf) raf = requestAnimationFrame(tick);
+          });
+        });
+        list.addEventListener('mouseleave', function () { on = false; list.classList.remove('jd-hovering'); fw.classList.remove('jd-on'); });
+      }
+    }
+
+    /* ── 시공 사례 페이지: 업종 · 평수 필터 ── */
+    var pf = $('.jd-pf', root);
+    if (pf) {
+      var want = { type: 'all', size: 'all' };
+      var cases = $$('.jd-case', root), idx = $$('#jd-idx li', root);
+      var apply = function () {
+        var n = 0;
+        var ok = function (el) { return (want.type === 'all' || el.getAttribute('data-jd-type') === want.type) && (want.size === 'all' || el.getAttribute('data-jd-size') === want.size); };
+        cases.forEach(function (c) { var on = ok(c); c.classList.toggle('jd-hide', !on); if (on) n++; });
+        idx.forEach(function (li) { li.classList.toggle('jd-hide', !ok(li)); });
+        $('#jd-pf-count', root).textContent = n ? n + '곳' : '0곳';
+        $('#jd-empty', root).hidden = n > 0;
+      };
+      pf.addEventListener('click', function (ev) {
+        var b = ev.target.closest('button'); if (!b) return;
+        var k = b.getAttribute('data-jd-k');
+        want[k] = b.getAttribute('data-jd-v');
+        $$('button[data-jd-k="' + k + '"]', pf).forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        apply();
+      });
+    }
+
+    /* ── 상담 신청 폼: 메일 앱에 내용을 채워 연다 (아임웹 입력폼 위젯으로 바꿔도 됨) ── */
+    var form = $('#jd-form', root);
+    if (form) form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var v = function (id) { var n = $('#' + id, form); return n ? n.value.trim() : ''; };
+      var r = function (name) { var n = $('input[name="' + name + '"]:checked', form); return n ? n.value : ''; };
+      var msg = $('#jd-form-msg', form);
+      if (!v('jd-tel')) { msg.textContent = '연락처만 남겨 주시면 저희가 전화드릴게요.'; $('#jd-tel', form).focus(); return; }
+      var body = '업종: ' + r('jd-type') + '\n자리 상태: ' + r('jd-state') + '\n평수: ' + v('jd-size') + '\n오픈 예정일: ' + v('jd-date') +
+        '\n지역: ' + v('jd-area') + '\n성함: ' + v('jd-name') + '\n연락처: ' + v('jd-tel') + '\n\n' + v('jd-memo');
+      location.href = 'mailto:' + (cfg.email || 'open@jeomdeung.kr') + '?subject=' + encodeURIComponent('[오픈 상담] ' + r('jd-type') + ' ' + v('jd-size') + ' ' + v('jd-date')) + '&body=' + encodeURIComponent(body);
+      msg.textContent = '메일 창이 뜨면 전송만 누르시면 돼요.';
+    });
+
+    /* ── 히어로 패럴랙스 ── */
+    var heroImg = $('.jd-hero-img img', root);
+    if (heroImg && !reduce) {
+      var hp = function () { var y = Math.min(scrollY, innerHeight); heroImg.style.transform = 'translate3d(0,' + (y * -0.12) + 'px,0)'; };
+      addEventListener('scroll', hp, { passive: true }); hp();
+    }
+
+    /* ── 오픈 역산표: 스크롤에 따라 D-45 → D-0 으로 불이 옮겨 붙음 ── */
+    var tl = $('#jd-tl', root);
+    if (tl) {
+      var tli = $$('li', tl);
+      var tp = function () {
+        var r = tl.getBoundingClientRect();
+        var p = reduce ? 1 : clamp((innerHeight * 0.85 - r.top) / (innerHeight * 0.5), 0, 1);
+        tl.style.setProperty('--p', (p * 100) + '%');
+        tli.forEach(function (li, i) { li.classList.toggle('jd-lit', p >= i / (tli.length - 1) - 0.001); });
+      };
+      addEventListener('scroll', tp, { passive: true }); addEventListener('resize', tp); tp();
+    }
+
+    /* ── 숫자 올라가기 ── */
+    var counts = $$('[data-jd-count]', root);
+
+    /* ── 등장 ── */
+    var lrEls = $$('.jd-lr', root);
+    lrEls.forEach(function (el) { splitWords(el); });
+    var rvs = $$('.jd-rv, .jd-foot-mark', root);
+    if (reduce || !('IntersectionObserver' in window)) {
+      lrEls.forEach(function (el) { el.classList.add('jd-go'); });
+      rvs.forEach(function (el) { el.classList.add('jd-in'); });
+      return;
+    }
+    var lio = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { lio.unobserve(en.target); reveal(en.target); } }); }, { threshold: .2, rootMargin: '0px 0px -8% 0px' });
+    lrEls.forEach(function (el) { lio.observe(el); });
+    var show = function (el) { if (introOn()) { setTimeout(function () { show(el); }, 150); return; } el.classList.add('jd-in'); };
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en, k) { if (en.isIntersecting) { io.unobserve(en.target); setTimeout(function () { show(en.target); }, k * 90); } });
+    }, { threshold: .15 });
+    rvs.forEach(function (el) { io.observe(el); });
+    var cio = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        cio.unobserve(en.target);
+        var el = en.target, to = +el.getAttribute('data-jd-count'), t0 = 0;
+        if (!to) return;
+        var step = function (t) { if (!t0) t0 = t; var k = clamp((t - t0) / 1400, 0, 1); el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: .5 });
+    counts.forEach(function (el) { cio.observe(el); });
+  }
+
+  /* 위젯이 늦게 그려져도 나타나는 순간 시작 (최대 8초 감시) */
+  function start() { var root = $('.jd-page'); if (!root || root.getAttribute('data-jd-init')) return !!root; root.setAttribute('data-jd-init', '1'); init(root); return true; }
+  if (!start()) {
+    var mo = new MutationObserver(function () { if (start()) mo.disconnect(); });
+    mo.observe(html, { childList: true, subtree: true });
+    setTimeout(function () { mo.disconnect(); }, 8000);
+  }
+})();
+
+</script>
