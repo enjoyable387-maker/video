@@ -1,0 +1,644 @@
+<!-- ③ 스크립트 — 고칠 것 없음 -->
+<script>
+/* 담터 — 스크립트 원본 (src/dt.js)
+   아임웹에서는 공통 코드 › Footer 에, 로컬 미리보기에서는 페이지 끝에서 실행된다.
+   전역은 window.DT 하나. 설정은 window.DT_CONFIG (1_설정) 에서 읽는다.
+   스크립트 안에 HTML 문자 참조 금지(아임웹이 풀어 버림). */
+(function () {
+  if (window.DT && window.DT.ready) return;          // 중복 삽입 방지
+  var DT = window.DT = { ready: true };
+  var cfg = DT.cfg = window.DT_CONFIG || {};
+  var pages = cfg.pages || { main: 'index.html' };
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var html = document.documentElement;
+  var clamp = function (v, a, b) { return Math.min(Math.max(v, a), b); };
+  var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var media = function (name) { return (cfg.media && cfg.media[name]) || (cfg.mediaBase || 'media/') + name; };
+  var page = function (k) { return pages[k] || pages.main; };
+
+  /* 지은 집 — 메인과 이후 Houses 가 같이 쓴다 */
+  var HOUSES = [
+    { name: '벽돌 담 집', place: '양평 서종면', area: '41평 · 2층', cost: '4억 3천', months: '15개월', img: 'h01-yangpyeong.jpg', plan: 'h01-plan.jpg',
+      say: '땅을 계약하기 전에 지번만 보냈는데,<br>도로 폭 때문에 생각한 크기로는 못 짓는다는 걸 그때 알았어요.<br>다른 땅을 골랐고 지금 거기 살아요.', who: '네 식구' },
+    { name: '비탈 위 삼나무 집', place: '광주 퇴촌면', area: '38평 · 2층', cost: '3억 9천', months: '12개월', img: 'h02-gwangju.jpg', plan: 'h02-plan.jpg',
+      say: '첫 견적이 예산보다 3천 넘게 나왔는데<br>다락을 빼고 외벽을 바꿔서 다시 그려 주셨어요.', who: '부부' },
+    { name: '처마 긴 집', place: '여주 강천면', area: '32평 · 단층', cost: '3억 4천', months: '14개월', img: 'h03-yeoju.jpg', plan: 'h03-plan.jpg',
+      say: '골조 올라갈 때 사진을 매번 보내 주셔서<br>서울에서도 마음이 놓였어요.', who: '은퇴한 부부' },
+    { name: '모퉁이 3층 집', place: '용인 동천동', area: '29평 · 3층', cost: '3억 6천', months: '11개월', img: 'h04-yongin.jpg', plan: 'h04-plan.jpg',
+      say: '50평 땅에 세 식구 방이 다 나올 줄 몰랐어요.', who: '세 식구' }
+  ];
+
+  /* 2025년 사용승인 12채 — Works 대장 · 지도. h: HOUSES 번호(사진 있는 집) · x,y: 지도 좌표 */
+  var LEDGER = [
+    { m: '2025.01', name: '마당 둘 집', town: '이천', place: '이천 설성면', py: 44, fl: '2층', cost: 45000, diff: -3.8, x: 250, y: 345 },
+    { m: '2025.02', name: '벽돌 담 집', town: '양평', place: '양평 서종면', py: 41, fl: '2층', cost: 43000, diff: -2.6, x: 285, y: 58, h: 0 },
+    { m: '2025.03', name: '주말에 가는 집', town: '양평', place: '양평 강하면', py: 18, fl: '단층', cost: 19000, diff: -1.9, x: 240, y: 128 },
+    { m: '2025.04', name: '비탈 위 삼나무 집', town: '광주', place: '광주 퇴촌면', py: 38, fl: '2층', cost: 39000, diff: -0.7, x: 182, y: 122, h: 1 },
+    { m: '2025.05', name: '처마 긴 집', town: '여주', place: '여주 강천면', py: 32, fl: '단층', cost: 34000, diff: 6, x: 356, y: 290, h: 2 },
+    { m: '2025.06', name: '느티나무 옆 집', town: '용인', place: '용인 원삼면', py: 36, fl: '2층', cost: 37000, diff: -2.2, x: 150, y: 318 },
+    { m: '2025.07', name: '두 세대 집', town: '광주', place: '광주 남종면', py: 52, fl: '2층', cost: 51000, diff: -1.1, x: 212, y: 92 },
+    { m: '2025.08', name: '작업실 있는 집', town: '이천', place: '이천 백사면', py: 35, fl: '2층', cost: 36000, diff: -3.0, x: 262, y: 250 },
+    { m: '2025.09', name: '모퉁이 3층 집', town: '용인', place: '용인 동천동', py: 29, fl: '3층', cost: 36000, diff: 11, x: 68, y: 196, h: 3 },
+    { m: '2025.10', name: '개울 앞 집', town: '양평', place: '양평 옥천면', py: 33, fl: '단층', cost: 33000, diff: -0.4, x: 312, y: 118 },
+    { m: '2025.11', name: '긴 창 집', town: '여주', place: '여주 대신면', py: 39, fl: '2층', cost: 40000, diff: -1.5, x: 318, y: 228 },
+    { m: '2025.12', name: '계단 마당 집', town: '광주', place: '광주 도척면', py: 40, fl: '2층', cost: 41000, diff: -0.9, x: 170, y: 196 }
+  ];
+
+  /* 포트폴리오 갤러리 — LEDGER 순서와 같다. 첫 사진이 목록 표지, 두 번째가 마우스를 올렸을 때 */
+  var GALLERY = [
+    ['p-madang.jpg', 'p-madang-2.jpg'],
+    ['h01-yangpyeong.jpg', 'h05-living.jpg', 'h01-detail.jpg', 'h01-yangpyeong-dusk.jpg', 'h01-plan.jpg'],
+    ['p-weekend.jpg', 'p-weekend-2.jpg'],
+    ['h02-gwangju.jpg', 'p-gwangju-2.jpg', 'h02-plan.jpg'],
+    ['h03-yeoju.jpg', 'p-yeoju-2.jpg', 'h03-plan.jpg'],
+    ['p-neuti.jpg', 'p-neuti-2.jpg'],
+    ['p-twogen.jpg', 'p-twogen-2.jpg'],
+    ['p-studio.jpg', 'p-studio-2.jpg'],
+    ['h04-yongin.jpg', 'p-yongin-2.jpg', 'h04-plan.jpg'],
+    ['p-stream.jpg', 'p-stream-2.jpg'],
+    ['p-longwin.jpg', 'p-longwin-2.jpg'],
+    ['p-terrace.jpg', 'p-terrace-2.jpg']
+  ];
+  var GAL_NOTE = [
+    '두 마당 사이를 유리 복도로 이었어요. 앞마당은 손님, 뒷마당은 가족 몫이에요.',
+    '', '평일엔 비어 있는 집이라 관리가 쉬운 재료만 골랐어요.', '',  '',
+    '느티나무 뿌리를 피하려고 기초 위치를 두 번 옮겼어요.',
+    '부모님과 아들 가족이 현관을 따로 쓰고 마당은 같이 써요.',
+    '북쪽 높은 창으로 하루 종일 고른 빛이 들어오는 작업실이에요.',
+    '', '개울 쪽 침실 창은 누워서 물이 보이는 높이에 맞췄어요.',
+    '2층 복도 창 하나를 11m로 길게 냈어요.', '비탈을 세 단으로 나눠서 단마다 텃밭이 있어요.'
+  ];
+
+  LEDGER.forEach(function (h, i) { h.i = i; });
+
+  /* 벽돌 담 집 공종별 계획 · 실제 (만원) */
+  var COST = [
+    ['가설 · 부대', 1600, 1500], ['토목 · 기초', 4200, 4050], ['골조', 9800, 9700], ['외장 벽돌', 7400, 7350],
+    ['지붕', 2600, 2550], ['창호', 4100, 4650], ['설비 · 전기', 6800, 6700], ['내장', 7650, 6500]
+  ];
+
+  /* 대지 검토서 예시 — 숫자는 모두 가상. 도면 좌표는 400×300 기준 */
+  var LOTS = [
+    { key: 'yp', tab: '양평 서종면', size: '185평', zone: '계획관리지역', name: '양평군 서종면 · 전원 택지',
+      lot: '46,40 356,30 368,252 34,266', road: { d: 'M20 284 L380 270', t: '도로 6m', x: 200, y: 296 },
+      max: [92, 78, 216, 138], house: [120, 104, 150, 84], court: [120, 196, 150, 34],
+      nums: [['대지 면적', '612㎡', '185평'], ['건폐율 40%', '바닥 74평까지', ''], ['용적률 100%', '연면적 185평까지', ''],
+             ['저희 권장', '2층 38–45평', '마당을 남기는 크기', 1], ['설계비', '1,680만원', '40평 기준', 1], ['계약에서 착공까지', '5–6개월', '', 1]],
+      warn: '진입 도로가 개인 땅이라 토지 사용 동의서를 먼저 받아야 해요.' },
+    { key: 'yi', tab: '용인 동천동', size: '50평', zone: '제1종일반주거지역', name: '용인시 수지구 동천동 · 모퉁이 땅',
+      lot: '130,40 290,40 318,68 318,262 130,262', road: { d: 'M118 24 L330 24 M334 56 L334 280', t: '도로 6m · 8m', x: 226, y: 16 },
+      max: [146, 56, 156, 190], house: [152, 120, 144, 122], court: null, sun: 'M146 56 L302 56 L302 92 L146 118 Z',
+      nums: [['대지 면적', '165㎡', '50평'], ['건폐율 60%', '바닥 30평까지', ''], ['용적률 150%', '연면적 75평까지', ''],
+             ['저희 권장', '3층 29–33평', '세 식구 방 셋', 1], ['설계비', '1,392만원', '29평 기준', 1], ['계약에서 착공까지', '4–5개월', '', 1]],
+      warn: '북쪽 이웃집 일조 때문에 3층은 북쪽에서 물러나야 해요.<br>도면에 빗금 친 자리예요.' },
+    { key: 'yj', tab: '여주 강천면', size: '360평', zone: '생산관리지역 · 농지', name: '여주시 강천면 · 밭',
+      lot: '24,62 378,40 386,248 16,266', road: { d: 'M8 36 L8 280', t: '농로 4m', x: 30, y: 26 },
+      max: [66, 88, 270, 130], house: [92, 124, 222, 52], court: [92, 186, 222, 40],
+      nums: [['대지 면적', '1,190㎡', '360평'], ['건폐율 20%', '바닥 72평까지', ''], ['용적률 80%', '연면적 288평까지', ''],
+             ['저희 권장', '단층 30–34평', '처마와 마당을 길게', 1], ['설계비', '1,344만원', '32평 기준', 1], ['계약에서 착공까지', '6–7개월', '', 1]],
+      warn: '지목이 밭이라 농지전용 허가가 먼저예요.<br>다른 땅보다 4–6주 더 걸려요.' }
+  ];
+
+  /* 2025년 사용승인 12채 — 계획 대비 실제 공사비(%) */
+  var BUDGET = [-3.8, -2.6, -1.9, -0.7, 6, -2.2, -1.1, -3.0, 11, -0.4, -1.5, -0.9];
+  var BUDGET_NOTE = { 4: ['여주 강천 집 +6%', '터파기에서 암반이 나왔어요.', '그 뒤로 계약 전에 지반조사를 권해요.'],
+                      8: ['용인 동천 집 +11%', '공사 중 창호를 한 등급 올렸어요.', '차액은 착공 전 합의서로 정리했어요.'] };
+
+  /* 1년 일정 — 단위: 계약 후 개월 */
+  var PLAN = [
+    { lab: '대지 검토', sub: '계약 전 · 3일', key: 0, todo: '지번을 보내 주세요.' },
+    { lab: '계획설계', sub: '6주', bar: [0, 1.5], todo: '가족이 하루를 어떻게 보내는지 들려주세요.' },
+    { lab: '개략 견적 확인', sub: '1주', bar: [1.5, 1.8], todo: '예산을 넘으면 여기서 다시 그려요.' },
+    { lab: '인허가', sub: '6–10주 · 기다리는 시간', bar: [1.8, 4.2], wait: 1, todo: '이때 대출 상담을 시작하시면 좋아요.' },
+    { lab: '실시설계', sub: '5주', bar: [4.2, 5.4], todo: '타일 · 창호 · 조명을 같이 골라요.' },
+    { lab: '시공 · 감리', sub: '6–7개월', bar: [5.6, 12.2], visits: 1, todo: '한 달에 한 번 현장에서 만나요.' },
+    { lab: '사용승인 · 입주', sub: '', key: 12.6, todo: '열쇠를 드려요.' }
+  ];
+
+  /* 아임웹 기본 헤더·푸터 숨김 */
+  function hideHost() {
+    if (!cfg.hide || !cfg.hide.length || document.getElementById('dt-hide')) return;
+    var st = document.createElement('style');
+    st.id = 'dt-hide';
+    st.textContent = cfg.hide.join(',') + '{display:none!important}';
+    document.head.appendChild(st);
+  }
+
+  /* 스크롤 고정(sticky) 을 막는 부모의 overflow 를 푼다 — 아임웹 섹션은 대개 overflow:hidden */
+  function freeOverflow(root) {
+    for (var n = root.parentElement; n && n !== document.body && n !== html; n = n.parentElement) {
+      var cs = getComputedStyle(n);
+      if (cs.overflow !== 'visible' || cs.overflowX !== 'visible' || cs.overflowY !== 'visible') n.style.overflow = 'visible';
+    }
+  }
+
+  /* 헤더 — 아임웹 섹션의 transform 에 갇히지 않게 body 에 직접 붙인다 */
+  function chrome(key) {
+    var ask = page(key) + '#dt-ask';
+    var wrap = document.createElement('div');
+    wrap.className = 'dt dt-chrome';
+    wrap.innerHTML = '<header class="dt-hdr" id="dt-hdr">' +
+      '<a class="dt-logo" href="' + page('main') + '" aria-label="담터 건축사사무소 — 홈">Damteo<small>담터 건축사사무소</small></a>' +
+      '<nav class="dt-nav" aria-label="주 메뉴"><a href="' + page('portfolio') + '"' + (key === 'portfolio' ? ' aria-current="page"' : '') + '>Work</a></nav>' +
+      '<a class="dt-btn dt-hdr-cta" href="' + ask + '">Contact</a></header>' +
+      '<div class="dt-mbar" id="dt-mbar"><a href="' + ask + '">지번 보내기</a><a href="tel:03180160523">전화</a></div>';
+    document.body.appendChild(wrap);
+    var hdr = $('#dt-hdr'), bar = $('#dt-mbar');
+    var onScroll = function () {
+      hdr.classList.toggle('dt-solid', scrollY > 8);
+      var nearEnd = scrollY + innerHeight > document.documentElement.scrollHeight - 360;
+      bar.classList.toggle('dt-up', scrollY > innerHeight * 0.9 && !nearEnd);
+    };
+    addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  }
+
+  /* 모바일에서 <br> 을 숨겨도 단어가 붙지 않게 — <br> 앞에 공백을 둔다 (PC 줄 끝 공백은 안 보임) */
+  function spaceBr(el) {
+    $$('br', el).forEach(function (br) {
+      var p = br.previousSibling;
+      if (p && p.nodeType === 3 && /\s$/.test(p.nodeValue)) return;
+      br.parentNode.insertBefore(document.createTextNode(' '), br);
+    });
+  }
+
+  /* 단어 감싸기 — 줄 단위 리빌과 흐림 리빌이 같이 쓴다 */
+  function splitWords(el) {
+    var n = 0;
+    var walk = function (node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (c) {
+        if (c.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          c.nodeValue.split(/(\s+)/).forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            var w = document.createElement('span'); w.className = 'dt-w';
+            var i = document.createElement('span'); i.textContent = part; w.style.setProperty('--i', n++);
+            w.appendChild(i); frag.appendChild(w);
+          });
+          c.parentNode.replaceChild(frag, c);
+        } else if (c.nodeType === 1 && c.tagName !== 'BR') walk(c);
+      });
+    };
+    walk(el);
+  }
+  function lines(el) {
+    var top = null, line = -1;
+    $$('.dt-w', el).forEach(function (w) { var t = w.offsetTop; if (top === null || Math.abs(t - top) > 4) { line++; top = t; } w.style.setProperty('--l', line); });
+  }
+
+  /* 히어로 — 흩어지는 집들 + 대표 집에 저녁 불 */
+  function hero(root) {
+    var sec = $('.dt-hero', root);
+    if (!sec) return;
+    var main = $('.dt-hero-main', sec), dusk = $('.dt-hero-dusk', sec), band = $('.dt-hero-band', sec), cap = $('.dt-hero-cap', sec);
+    // 도착 위치 (화면 가운데 기준 vw, vh) · 회전 없음 — 수직은 곧게
+    var fly = [
+      { el: $('.dt-fly-a', sec), x: -34, y: -26, at: 0.00 },
+      { el: $('.dt-fly-b', sec), x: 33, y: -22, at: 0.06 },
+      { el: $('.dt-fly-c', sec), x: -30, y: 20, at: 0.12 },
+      { el: $('.dt-fly-d', sec), x: 31, y: 18, at: 0.18 }
+    ];
+    var mobile = function () { return innerWidth <= 760; };
+    var tick = function () {
+      var r = sec.getBoundingClientRect();
+      var total = sec.offsetHeight - innerHeight;
+      var p = reduce ? 0 : clamp(-r.top / total, 0, 1);
+      var mk = mobile() ? 0.62 : 1;
+      fly.forEach(function (f) {
+        var k = ease(clamp((p - f.at) / 0.42, 0, 1));
+        f.el.style.opacity = k > 0 ? Math.min(1, k * 2.2) : 0;
+        f.el.style.transform = 'translate(-50%,-50%) translate(' + (f.x * k * mk) + 'vw,' + (f.y * k * (mobile() ? 1.1 : 1)) + 'vh) scale(' + (0.6 + 0.4 * k) + ')';
+      });
+      var g = ease(clamp((p - 0.1) / 0.5, 0, 1));
+      main.style.transform = 'translate(-50%,-50%) scale(' + (1 + g * (mobile() ? 0.25 : 0.32)) + ')';
+      dusk.style.opacity = clamp((p - 0.45) / 0.35, 0, 1);
+      band.style.opacity = 1 - clamp(p / 0.14, 0, 1);
+      band.style.pointerEvents = p > 0.1 ? 'none' : '';
+      cap.style.opacity = clamp((p - 0.7) / 0.15, 0, 1);
+    };
+    addEventListener('scroll', tick, { passive: true }); addEventListener('resize', tick); tick();
+  }
+
+  var NS = 'http://www.w3.org/2000/svg';
+  var rect = function (r, attrs) { return '<rect x="' + r[0] + '" y="' + r[1] + '" width="' + r[2] + '" height="' + r[3] + '" ' + attrs + '/>'; };
+
+  /* 대지 검토서 예시 */
+  function site(root) {
+    var tabs = $('#dt-tabs', root);
+    if (!tabs) return;
+    var plan = $('#dt-sheet-plan', root);
+    tabs.innerHTML = LOTS.map(function (l, i) {
+      return '<button class="dt-tab" type="button" role="tab" aria-selected="' + (i ? 'false' : 'true') + '" data-dt-lot="' + i + '"><b>' + l.tab + '</b><span>' + l.size + ' · ' + l.zone.split(' ')[0] + '</span></button>';
+    }).join('');
+    var draw = function (l) {
+      return '<svg viewBox="0 0 400 300" xmlns="' + NS + '" role="img" aria-label="' + l.name + ' 배치 검토">' +
+        '<defs><pattern id="dt-hatch-' + l.key + '" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#0B0B0B" stroke-width=".8"/></pattern></defs>' +
+        '<path d="' + l.road.d + '" fill="none" stroke="#0B0B0B" stroke-width="1"/>' +
+        '<text x="' + l.road.x + '" y="' + l.road.y + '" font-size="10" text-anchor="middle" fill="#767676">' + l.road.t + '</text>' +
+        '<polygon points="' + l.lot + '" fill="#fff" stroke="#0B0B0B" stroke-width="1.4" stroke-dasharray="10 3 2 3"/>' +
+        rect(l.max, 'fill="none" stroke="#0B0B0B" stroke-width=".8" stroke-dasharray="4 3"') +
+        (l.sun ? '<path d="' + l.sun + '" fill="url(#dt-hatch-' + l.key + ')" stroke="#0B0B0B" stroke-width=".6"/>' : '') +
+        (l.court ? rect(l.court, 'fill="url(#dt-hatch-' + l.key + ')" opacity=".55"') : '') +
+        rect(l.house, 'fill="#0B0B0B"') +
+        '<text x="' + (l.max[0] + 4) + '" y="' + (l.max[1] - 5) + '" font-size="9.5" fill="#767676">건폐율 한도</text>' +
+        '<text x="' + (l.house[0] + l.house[2] / 2) + '" y="' + (l.house[1] + l.house[3] / 2 + 4) + '" font-size="11" font-weight="700" text-anchor="middle" fill="#fff">권장 배치</text>' +
+        '<g transform="translate(370 262)"><path d="M0 -16 L6 0 L0 -4 L-6 0 Z" fill="#0B0B0B"/><text y="12" font-size="9" text-anchor="middle" fill="#0B0B0B">N</text></g>' +
+        '</svg>';
+    };
+    var show = function (i, first) {
+      var l = LOTS[i];
+      $$('.dt-tab', tabs).forEach(function (t, k) { t.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+      var fill = function () {
+        $('#dt-sheet-name', root).textContent = l.name;
+        $('#dt-sheet-zone', root).textContent = l.zone;
+        plan.innerHTML = draw(l);
+        $('#dt-sheet-nums', root).innerHTML = l.nums.map(function (n) {
+          return '<div' + (n[3] ? ' class="dt-key"' : '') + '><dt>' + n[0] + '</dt><dd>' + n[1] + (n[2] ? '<small>' + n[2] + '</small>' : '') + '</dd></div>';
+        }).join('');
+        $('#dt-sheet-warn', root).innerHTML = '<b>주의</b>' + l.warn;
+        spaceBr($('#dt-sheet', root));
+        plan.classList.remove('dt-fade');
+      };
+      if (first || reduce) return fill();
+      plan.classList.add('dt-fade');
+      setTimeout(fill, 300);
+    };
+    $$('.dt-tab', tabs).forEach(function (t) { t.addEventListener('click', function () { show(+t.getAttribute('data-dt-lot')); }); });
+    show(0, true);
+  }
+
+  /* 지은 집 — 사진 ↔ 1층 평면 */
+  function houses(root) {
+    var box = $('#dt-houses', root);
+    if (!box) return;
+    box.innerHTML = HOUSES.map(function (h) {
+      return '<article class="dt-house dt-rv"><figure>' +
+        '<img class="dt-photo" src="' + media(h.img) + '" alt="' + h.place + ' ' + h.name + '" loading="lazy">' +
+        '<img class="dt-plan" src="' + media(h.plan) + '" alt="' + h.name + ' 1층 평면도" loading="lazy"></figure>' +
+        '<h3>' + h.name + '</h3>' +
+        '<dl><div><dt>위치</dt><dd>' + h.place + '</dd></div><div><dt>규모</dt><dd>' + h.area + '</dd></div>' +
+        '<div><dt>공사비</dt><dd>' + h.cost + '</dd></div><div><dt>설계부터 입주까지</dt><dd>' + h.months + '</dd></div></dl>' +
+        '<blockquote>' + h.say + '<cite>' + h.who + '</cite></blockquote></article>';
+    }).join('');
+    var sec = $('.dt-works', root), btns = $$('[data-dt-view]', sec);
+    sec.setAttribute('data-view', 'photo');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        sec.setAttribute('data-view', b.getAttribute('data-dt-view'));
+        btns.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+      });
+    });
+  }
+
+  /* 공사비 기록 — 점 그래프 */
+  function chart(root) {
+    var fig = $('#dt-chart', root);
+    if (!fig) return;
+    var W = 640, H = 420, L = 44, R = 16, T = 20, B = 40, lo = -6, hi = 13;
+    var y = function (v) { return T + (hi - v) / (hi - lo) * (H - T - B); };
+    var x = function (i) { return L + (i + 0.5) * (W - L - R) / BUDGET.length; };
+    var out = '';
+    [-5, 0, 5, 10].forEach(function (v) {
+      out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(v) + '" y2="' + y(v) + '" stroke="' + (v ? 'rgba(0,0,0,.1)' : '#0B0B0B') + '" stroke-width="' + (v ? 1 : 1.2) + '"/>' +
+        '<text x="' + (L - 8) + '" y="' + (y(v) + 4) + '" text-anchor="end">' + (v > 0 ? '+' : '') + v + '%</text>';
+    });
+    out += '<text x="' + (W - R) + '" y="' + (y(0) - 8) + '" text-anchor="end" class="dt-c-sub">계획 공사비</text>';
+    BUDGET.forEach(function (v, i) {
+      var over = v > 0, n = BUDGET_NOTE[i];
+      out += '<line x1="' + x(i) + '" x2="' + x(i) + '" y1="' + y(0) + '" y2="' + y(v) + '" stroke="#0B0B0B" stroke-width="1" opacity=".35"/>' +
+        '<circle class="dt-c-dot" style="transition-delay:' + (i * 50) + 'ms" cx="' + x(i) + '" cy="' + y(v) + '" r="' + (over ? 7 : 5) + '" fill="' + (over ? '#fff' : '#0B0B0B') + '" stroke="#0B0B0B" stroke-width="2"/>' +
+        '<text x="' + x(i) + '" y="' + (H - B + 22) + '" text-anchor="middle">' + (i + 1) + '</text>';
+      if (n) {
+        var tx = x(i) + (i > 7 ? -14 : 14), anchor = i > 7 ? 'end' : 'start', ty = y(v) - 4;
+        out += '<g class="dt-c-tag"><text x="' + tx + '" y="' + ty + '" text-anchor="' + anchor + '" class="dt-c-note">' + n[0] + '</text>' +
+          '<text x="' + tx + '" y="' + (ty + 17) + '" text-anchor="' + anchor + '" class="dt-c-sub">' + n[1] + '</text>' +
+          '<text x="' + tx + '" y="' + (ty + 33) + '" text-anchor="' + anchor + '" class="dt-c-sub">' + n[2] + '</text></g>';
+      }
+    });
+    out += '<text class="dt-c-tag" x="' + L + '" y="' + (H - 2) + '">사용승인 순서 (2025)</text>';
+    var notes = '<ul class="dt-c-list">' + Object.keys(BUDGET_NOTE).map(function (k) { var n = BUDGET_NOTE[k]; return '<li><b>' + n[0] + '</b> ' + n[1] + ' ' + n[2] + '</li>'; }).join('') + '</ul>';
+    fig.innerHTML = notes + '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="' + NS + '" aria-hidden="true">' + out + '</svg>';
+  }
+
+  /* 1년 일정표 */
+  function gantt(root) {
+    var box = $('#dt-gantt', root);
+    if (!box) return;
+    var M = 13, pc = function (m) { return (m / M * 100) + '%'; };
+    var head = '<div class="dt-g-row dt-g-head"><span>단계</span><div class="dt-g-track">' +
+      [0, 3, 6, 9, 12].map(function (m) { return '<span style="left:' + pc(m) + '">' + (m ? m + '개월' : '계약') + '</span>'; }).join('') +
+      '</div><span>건축주가 하실 일</span></div>';
+    box.innerHTML = head + PLAN.map(function (p) {
+      var t = '';
+      if (p.bar) t += '<i class="dt-g-bar' + (p.wait ? ' dt-wait' : '') + '" style="left:' + pc(p.bar[0]) + ';width:' + pc(p.bar[1] - p.bar[0]) + '"></i>';
+      if (p.key !== undefined) t += '<i class="dt-g-key" style="left:' + pc(p.key) + '"></i>';
+      if (p.visits) {
+        for (var m = p.bar[0] + 0.25; m < p.bar[1]; m += 0.5) t += '<i class="dt-g-dot" style="left:' + pc(m) + ';margin-top:-24px"></i>';
+        [[6, '기초'], [7.6, '골조'], [9.2, '방수']].forEach(function (k) { t += '<i class="dt-g-dot dt-big" style="left:' + pc(k[0]) + ';margin-top:-27px" title="' + k[1] + ' 검측"></i>'; });
+      }
+      return '<div class="dt-g-row"><p class="dt-g-lab">' + p.lab + (p.sub ? '<small>' + p.sub + '</small>' : '') + '</p>' +
+        '<div class="dt-g-track">' + t + '</div><p class="dt-g-todo">' + p.todo + '</p></div>';
+    }).join('') +
+      '<p class="dt-g-legend"><span><i class="dt-g-dot"></i>현장 방문</span><span><i class="dt-g-dot dt-big"></i>기초 · 골조 · 방수 검측</span><span><i class="dt-g-bar dt-wait"></i>기다리는 시간</span></p>';
+  }
+
+  var won = function (v) { var e = Math.floor(v / 10000), r = v % 10000; return (e ? e + '억' : '') + (r ? (e ? ' ' : '') + String(r).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '만원' : (e ? '' : '0만원')); };
+  var comma = function (v) { return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+
+  /* Works — 지도 + 대장 + 옆 칸 + 한 채의 기록 */
+  function worksPage(root) {
+    var tbody = $('#dt-tbody', root);
+    if (!tbody) return;
+    var map = $('#dt-map', root), thead = $('#dt-thead', root);
+    var rows = LEDGER.map(function (h, i) { h.i = i; h.per = Math.round(h.cost / h.py); return h; });
+
+    /* 지도 — 한강 · 남한강과 시군 이름만 */
+    var dots = rows.map(function (h) {
+      return '<g class="dt-pin' + (h.h !== undefined ? ' dt-pin-ph' : '') + '" data-dt-i="' + h.i + '" transform="translate(' + h.x + ' ' + h.y + ')"><circle r="' + (h.h !== undefined ? 7 : 5) + '"/><text y="-12" text-anchor="middle">' + h.name + '</text></g>';
+    }).join('');
+    map.innerHTML = '<svg viewBox="0 0 400 420" xmlns="' + NS + '">' +
+      '<path class="dt-river" d="M400 64 C350 78 320 96 290 92 C260 88 240 80 205 74 C160 66 120 88 80 82 C50 78 20 90 0 86"/>' +
+      '<path class="dt-river" d="M236 80 C262 120 290 150 306 190 C322 230 340 262 400 300"/>' +
+      '<g class="dt-town"><text x="300" y="30">양평</text><text x="150" y="150">광주</text><text x="360" y="340">여주</text><text x="215" y="390">이천</text><text x="60" y="260">용인</text></g>' +
+      '<text class="dt-map-note" x="4" y="70">← 서울</text>' +
+      '<g class="dt-map-scale" transform="translate(12 404)"><line x1="0" x2="48" y1="0" y2="0"/><line x1="0" x2="0" y1="-4" y2="4"/><line x1="48" x2="48" y1="-4" y2="4"/><text x="56" y="4">10km</text></g>' +
+      '<g transform="translate(384 396)"><path d="M0 -16 L6 0 L0 -4 L-6 0 Z" fill="#0B0B0B"/><text y="12" font-size="9" text-anchor="middle">N</text></g>' +
+      dots + '</svg>';
+
+    /* 대장 표 */
+    var cols = [
+      ['m', '사용승인', 1], ['name', '이름'], ['place', '위치'], ['py', '연면적', 1], ['cost', '공사비', 1], ['per', '평당', 1], ['diff', '계획 대비', 1]
+    ];
+    var sortKey = 'm', dir = 1;
+    thead.innerHTML = cols.map(function (c) {
+      return '<th scope="col"' + (c[2] ? ' aria-sort="' + (c[0] === 'm' ? 'ascending' : 'none') + '"' : '') + '>' +
+        (c[2] ? '<button type="button" data-dt-sort="' + c[0] + '">' + c[1] + '<i></i></button>' : c[1]) + '</th>';
+    }).join('');
+    var draw = function () {
+      rows.sort(function (a, b) { var A = a[sortKey], B = b[sortKey]; return (A > B ? 1 : A < B ? -1 : 0) * dir; });
+      tbody.innerHTML = rows.map(function (h) {
+        var ph = h.h !== undefined;
+        return '<tr data-dt-i="' + h.i + '"' + (ph ? ' class="dt-has" tabindex="0" role="button" aria-label="' + h.name + ' 사진과 평면 보기"' : '') + '>' +
+          '<td class="dt-t-m">' + h.m + '</td><td class="dt-t-name">' + h.name + (ph ? '<i class="dt-t-ph">사진</i>' : '') + '</td>' +
+          '<td class="dt-t-place">' + h.place + '</td><td>' + h.py + '평 · ' + h.fl + '</td><td>' + won(h.cost) + '</td>' +
+          '<td>' + comma(h.per) + '만원</td><td class="dt-t-diff' + (h.diff > 0 ? ' dt-over' : '') + '">' + (h.diff > 0 ? '+' : '') + h.diff.toFixed(h.diff % 1 ? 1 : 0).replace(/^(-?\d+)$/, '$1.0') + '%</td></tr>';
+      }).join('');
+      $$('[data-dt-sort]', thead).forEach(function (b) {
+        var on = b.getAttribute('data-dt-sort') === sortKey;
+        b.parentNode.setAttribute('aria-sort', on ? (dir > 0 ? 'ascending' : 'descending') : 'none');
+      });
+    };
+    thead.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-dt-sort]');
+      if (!b) return;
+      var k = b.getAttribute('data-dt-sort');
+      if (k === sortKey) dir = -dir; else { sortKey = k; dir = k === 'm' ? 1 : -1; }
+      draw();
+    });
+    draw();
+
+    /* 줄 ↔ 점 같이 켜기 */
+    var light = function (i) {
+      $$('.dt-pin', map).forEach(function (g) { g.classList.toggle('dt-on', +g.getAttribute('data-dt-i') === i); });
+      $$('tr', tbody).forEach(function (r) { r.classList.toggle('dt-on', +r.getAttribute('data-dt-i') === i); });
+    };
+    tbody.addEventListener('mouseover', function (e) { var r = e.target.closest('tr'); if (r) light(+r.getAttribute('data-dt-i')); });
+    tbody.addEventListener('mouseleave', function () { light(-1); });
+    map.addEventListener('mouseover', function (e) { var g = e.target.closest('.dt-pin'); if (g) light(+g.getAttribute('data-dt-i')); });
+    map.addEventListener('mouseleave', function () { light(-1); });
+
+    /* 옆 칸 */
+    var drawer = $('#dt-house', root), body = $('#dt-house-body', root), last = null;
+    var open = function (i) {
+      var L = LEDGER[i], H = HOUSES[L.h];
+      if (!H) return;
+      last = document.activeElement;
+      body.innerHTML = '<p class="dt-dh-when">' + L.m + ' 사용승인</p><h2 class="dt-dh-t" id="dt-house-t">' + L.name + '</h2>' +
+        '<p class="dt-dh-meta">' + L.place + ' · ' + L.py + '평 · ' + L.fl + ' · ' + won(L.cost) + ' · 설계부터 입주까지 ' + H.months + '</p>' +
+        '<figure class="dt-dh-img"><img src="' + media(H.img) + '" alt="' + L.place + ' ' + L.name + '"></figure>' +
+        '<figure class="dt-dh-img dt-dh-plan"><img src="' + media(H.plan) + '" alt="' + L.name + ' 1층 평면도"><figcaption>1층 평면</figcaption></figure>' +
+        '<blockquote class="dt-dh-q"><p>' + H.say + '</p><cite>건축주 · ' + H.who + '</cite></blockquote>' +
+        (L.h === 0 ? '<a class="dt-more" href="#dt-case">땅부터 1년 뒤까지 읽기</a>' : '');
+      spaceBr(body);
+      drawer.classList.add('dt-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      $('#dt-house-x', root).focus();
+    };
+    var close = function () {
+      drawer.classList.remove('dt-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (last) last.focus();
+    };
+    tbody.addEventListener('click', function (e) { var r = e.target.closest('tr.dt-has'); if (r) open(+r.getAttribute('data-dt-i')); });
+    tbody.addEventListener('keydown', function (e) { var r = e.target.closest('tr.dt-has'); if (r && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); open(+r.getAttribute('data-dt-i')); } });
+    map.addEventListener('click', function (e) { var g = e.target.closest('.dt-pin-ph'); if (g) open(+g.getAttribute('data-dt-i')); });
+    $('#dt-house-x', root).addEventListener('click', close);
+    drawer.addEventListener('click', function (e) { if (e.target === drawer) close(); });
+    body.addEventListener('click', function (e) { if (e.target.closest('a[href^="#"]')) close(); });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && drawer.classList.contains('dt-open')) close(); });
+
+    /* 공종별 계획 · 실제 */
+    var cost = $('#dt-cost', root), max = 0;
+    COST.forEach(function (c) { max = Math.max(max, c[1], c[2]); });
+    var tp = 0, ta = 0;
+    cost.innerHTML = '<p class="dt-cost-key"><span><i class="dt-k-plan"></i>계획</span><span><i class="dt-k-real"></i>실제</span><span>단위 만원</span></p>' + COST.map(function (c) {
+      tp += c[1]; ta += c[2];
+      var d = c[2] - c[1];
+      return '<div class="dt-cost-row"><span class="dt-cost-l">' + c[0] + '</span>' +
+        '<span class="dt-cost-bars"><i class="dt-cost-plan" style="width:' + (c[1] / max * 100) + '%"></i><i class="dt-cost-real" style="width:' + (c[2] / max * 100) + '%"></i></span>' +
+        '<span class="dt-cost-v">' + comma(c[2]) + '<small' + (d > 0 ? ' class="dt-over"' : '') + '>' + (d > 0 ? '+' : '') + comma(d) + '</small></span></div>';
+    }).join('') +
+      '<div class="dt-cost-row dt-cost-sum"><span class="dt-cost-l">합계</span><span class="dt-cost-bars"></span><span class="dt-cost-v">' + comma(ta) + '<small>' + comma(ta - tp) + '</small></span></div>';
+
+    /* 기록 순서 — 지금 읽는 장 표시 */
+    var nav = $('#dt-case-nav', root);
+    if (nav && 'IntersectionObserver' in window) {
+      var links = $$('a', nav);
+      var cio = new IntersectionObserver(function (es) {
+        es.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          links.forEach(function (a) { a.classList.toggle('dt-now', a.getAttribute('href') === '#' + en.target.id); });
+        });
+      }, { rootMargin: '-45% 0px -50% 0px' });
+      $$('.dt-ch', root).forEach(function (c) { cio.observe(c); });
+    }
+  }
+
+  /* 포트폴리오 — 지역 필터 + 3단 갤러리(가운데 단은 천천히) + 사진 보기 */
+  function gallery(root) {
+    var box = $('#dt-gal', root);
+    if (!box) return;
+    var filter = $('#dt-gal-filter', root), towns = ['양평', '광주', '여주', '이천', '용인'], cur = '';
+    var count = function (t) { return LEDGER.filter(function (h) { return !t || h.town === t; }).length; };
+    filter.innerHTML = [''].concat(towns).map(function (t) {
+      return '<button type="button" aria-pressed="' + (t ? 'false' : 'true') + '" data-dt-town="' + t + '">' + (t || '전체') + '<sup>' + count(t) + '</sup></button>';
+    }).join('');
+
+    var card = function (h) {
+      var g = GALLERY[h.i];
+      return '<a class="dt-card" href="#" data-dt-i="' + h.i + '" aria-label="' + h.name + ' 사진 ' + g.length + '장 보기">' +
+        '<figure><img class="dt-card-a" src="' + media(g[0]) + '" alt="" loading="lazy">' +
+        (g[1] ? '<img class="dt-card-b" src="' + media(g[1]) + '" alt="" loading="lazy">' : '') + '</figure>' +
+        '<p class="dt-card-cap"><b>' + h.name + '</b><span>' + h.place + ' · ' + h.py + '평</span></p></a>';
+    };
+    var cols = function () { return innerWidth <= 760 ? 1 : innerWidth <= 1100 ? 2 : 3; };
+    var n = 0;
+    var draw = function () {
+      n = cols();
+      var list = LEDGER.filter(function (h) { return !cur || h.town === cur; });
+      var c = []; for (var k = 0; k < n; k++) c.push('');
+      list.forEach(function (h, i) { c[i % n] += card(h); });
+      box.innerHTML = c.map(function (html, k) { return '<div class="dt-col' + (n === 3 && k === 1 ? ' dt-col-slow' : '') + '">' + html + '</div>'; }).join('');
+      $$('img', box).forEach(function (im) { im.addEventListener('load', function () { im.parentNode.parentNode.classList.add('dt-loaded'); }); if (im.complete) im.parentNode.parentNode.classList.add('dt-loaded'); });
+      par();
+    };
+    filter.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-dt-town]');
+      if (!b) return;
+      cur = b.getAttribute('data-dt-town');
+      $$('button', filter).forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+      box.classList.add('dt-fade');
+      setTimeout(function () { draw(); box.classList.remove('dt-fade'); }, 250);
+    });
+    /* 가운데 단은 스크롤보다 천천히 (Love and Money 의 교차 무빙) */
+    var par = function () {
+      var slow = $('.dt-col-slow', box);
+      if (!slow || reduce) return;
+      var r = box.getBoundingClientRect();
+      var k = clamp((innerHeight - r.top) / (r.height + innerHeight), 0, 1);
+      slow.style.transform = 'translateY(' + (k * 160 - 20) + 'px)';
+    };
+    addEventListener('scroll', par, { passive: true });
+    addEventListener('resize', function () { if (cols() !== n) draw(); else par(); });
+    draw();
+
+    /* 사진 보기 */
+    var lb = $('#dt-lb', root), img = $('#dt-lb-img', root), fig = $('#dt-lb-fig', root);
+    var hi = 0, pi = 0, last = null, order = function () { return LEDGER.filter(function (h) { return !cur || h.town === cur; }); };
+    var show = function () {
+      var h = LEDGER[hi], g = GALLERY[hi], H = h.h !== undefined ? HOUSES[h.h] : null;
+      fig.classList.add('dt-fade');
+      setTimeout(function () {
+        img.src = media(g[pi]);
+        img.alt = h.name + ' 사진 ' + (pi + 1);
+        fig.classList.toggle('dt-is-plan', /plan/.test(g[pi]));
+        fig.classList.remove('dt-fade');
+      }, 180);
+      $('#dt-lb-count', root).textContent = (pi + 1) + ' / ' + g.length;
+      $('#dt-lb-info', root).innerHTML = '<p class="dt-lb-when">' + h.m + ' 사용승인 · ' + h.place + '</p>' +
+        '<h2 class="dt-lb-t" id="dt-lb-t">' + h.name + '</h2>' +
+        '<dl class="dt-lb-dl"><div><dt>규모</dt><dd>' + h.py + '평 · ' + h.fl + '</dd></div><div><dt>공사비</dt><dd>' + won(h.cost) + '</dd></div>' +
+        '<div><dt>평당</dt><dd>' + comma(Math.round(h.cost / h.py)) + '만원</dd></div><div><dt>계획 대비</dt><dd>' + (h.diff > 0 ? '+' : '') + h.diff.toFixed(1) + '%</dd></div></dl>' +
+        (H ? '<blockquote class="dt-lb-q"><p>' + H.say + '</p><cite>건축주 · ' + H.who + '</cite></blockquote>' : '<p class="dt-lb-note">' + GAL_NOTE[hi] + '</p>') +
+        (hi === 1 ? '<a class="dt-more" href="' + page('works') + '#dt-case">땅부터 1년 뒤까지 기록 보기</a>' : '');
+      spaceBr($('#dt-lb-info', root));
+      $('#dt-lb-thumbs', root).innerHTML = g.map(function (f, k) {
+        return '<button type="button" data-dt-p="' + k + '"' + (k === pi ? ' aria-current="true"' : '') + ' aria-label="' + (k + 1) + '번째 사진"><img src="' + media(f) + '" alt=""></button>';
+      }).join('');
+    };
+    var open = function (i) {
+      last = document.activeElement; hi = i; pi = 0; show();
+      lb.classList.add('dt-open'); lb.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      $('#dt-lb-x', root).focus();
+    };
+    var close = function () {
+      lb.classList.remove('dt-open'); lb.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (last) last.focus();
+    };
+    var step = function (d) { var g = GALLERY[hi]; pi = (pi + d + g.length) % g.length; show(); };
+    var house = function (d) { var o = order(), k = 0; o.forEach(function (h, j) { if (h.i === hi) k = j; }); hi = o[(k + d + o.length) % o.length].i; pi = 0; show(); };
+    box.addEventListener('click', function (e) { var a = e.target.closest('.dt-card'); if (!a) return; e.preventDefault(); open(+a.getAttribute('data-dt-i')); });
+    $('#dt-lb-prev', root).addEventListener('click', function () { step(-1); });
+    $('#dt-lb-next', root).addEventListener('click', function () { step(1); });
+    $('#dt-lb-prevh', root).addEventListener('click', function () { house(-1); });
+    $('#dt-lb-nexth', root).addEventListener('click', function () { house(1); });
+    $('#dt-lb-x', root).addEventListener('click', close);
+    $('#dt-lb-thumbs', root).addEventListener('click', function (e) { var b = e.target.closest('[data-dt-p]'); if (b) { pi = +b.getAttribute('data-dt-p'); show(); } });
+    addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('dt-open')) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') step(1);
+      else if (e.key === 'ArrowLeft') step(-1);
+    });
+    var x0 = null;
+    fig.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    fig.addEventListener('touchend', function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1); x0 = null; });
+  }
+
+  /* 지번 보내기 — 메일 앱으로 넘김 (아임웹 입력폼으로 바꿀 수 있음) */
+  function ask(root) {
+    var f = $('#dt-ask-form', root);
+    if (!f) return;
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = $('#dt-lot', f).value.trim();
+      if (!v) { $('#dt-lot', f).focus(); return; }
+      location.href = 'mailto:' + (cfg.email || 'hello@damteo.kr') + '?subject=' + encodeURIComponent('대지 검토 요청') + '&body=' + encodeURIComponent('지번: ' + v + '\n연락처: \n예산(대략): \n');
+    });
+  }
+
+  function init(root) {
+    var key = root.getAttribute('data-dt-key') || 'main';
+    html.classList.add('dt-on');
+    hideHost();
+    freeOverflow(root);
+    chrome(key);
+    $$('[data-dt-src]', root).forEach(function (img) { img.src = media(img.getAttribute('data-dt-src')); });
+    $$('[data-dt-page]', root).forEach(function (a) { a.href = page(a.getAttribute('data-dt-page')) + (a.getAttribute('data-dt-hash') || ''); });
+    hero(root);
+    site(root);
+    houses(root);
+    chart(root);
+    gantt(root);
+    worksPage(root);
+    gallery(root);
+    ask(root);
+    spaceBr(root);
+
+    /* ── 등장 ── */
+    var lrEls = $$('.dt-lr, .dt-blur', root);
+    lrEls.forEach(splitWords);
+    var rvs = $$('.dt-rv, .dt-chart, .dt-gantt, .dt-cost', root);
+    var counts = $$('[data-dt-count]', root);
+    if (reduce || !('IntersectionObserver' in window)) {
+      lrEls.forEach(function (el) { el.classList.add('dt-go'); });
+      rvs.forEach(function (el) { el.classList.add('dt-in'); });
+      return;
+    }
+    var lio = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting) { lio.unobserve(en.target); lines(en.target); requestAnimationFrame(function () { en.target.classList.add('dt-go'); }); } });
+    }, { threshold: .3, rootMargin: '0px 0px -8% 0px' });
+    lrEls.forEach(function (el) { lio.observe(el); });
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en, k) { if (en.isIntersecting) { io.unobserve(en.target); setTimeout(function () { en.target.classList.add('dt-in'); }, k * 90); } });
+    }, { threshold: .12 });
+    rvs.forEach(function (el) { io.observe(el); });
+    var cio = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        cio.unobserve(en.target);
+        var el = en.target, to = +el.getAttribute('data-dt-count'), t0 = 0;
+        var fmt = function (v) { return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+        var step = function (t) { if (!t0) t0 = t; var k = clamp((t - t0) / 1400, 0, 1); el.textContent = fmt(Math.round(to * ease(k))); if (k < 1) requestAnimationFrame(step); };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: .5 });
+    counts.forEach(function (el) { cio.observe(el); });
+  }
+
+  /* 위젯이 늦게 그려져도 나타나는 순간 시작 (최대 8초 감시) */
+  function start() { var root = $('.dt-page'); if (!root || root.getAttribute('data-dt-init')) return !!root; root.setAttribute('data-dt-init', '1'); init(root); return true; }
+  if (!start()) {
+    var mo = new MutationObserver(function () { if (start()) mo.disconnect(); });
+    mo.observe(html, { childList: true, subtree: true });
+    setTimeout(function () { mo.disconnect(); }, 8000);
+  }
+})();
+
+</script>

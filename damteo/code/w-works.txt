@@ -1,0 +1,131 @@
+<!-- ④ Works 페이지 위젯 — 아임웹 페이지 주소 /works -->
+<div class="dt dt-page dt-sub" data-dt-key="works">
+
+<!-- 페이지 머리 -->
+<header class="dt-phead">
+  <h1 class="dt-phead-t">지은 집<sup>2025</sup></h1>
+  <p class="dt-phead-p">2025년에 사용승인이 난 12채예요.<br>표 머리를 누르면 넓이나 공사비 순으로 다시 정렬돼요.</p>
+</header>
+
+<!-- 지도 + 대장 -->
+<section class="dt-ledger" id="dt-ledger">
+  <figure class="dt-map" id="dt-map" aria-label="경기 남부에 지은 집 위치"></figure>
+  <div class="dt-table-wrap">
+    <table class="dt-table" id="dt-table">
+      <thead><tr id="dt-thead"></tr></thead>
+      <tbody id="dt-tbody"></tbody>
+    </table>
+    <p class="dt-table-note">사진이 있는 4채는 줄을 누르면 사진과 1층 평면을 볼 수 있어요.<br>나머지 8채는 건축주 동의를 받은 만큼만 적었어요.</p>
+  </div>
+</section>
+
+<!-- 한 채의 기록: 벽돌 담 집 -->
+<section class="dt-case" id="dt-case">
+  <header class="dt-case-head">
+    <p class="dt-case-kicker">한 채를 처음부터 끝까지</p>
+    <h2 class="dt-case-t">벽돌 담 집</h2>
+    <p class="dt-case-meta">양평 서종면 · 41평 · 2층 · 네 식구 · <span class="dt-nb">2025년 2월 사용승인</span></p>
+  </header>
+
+  <div class="dt-case-body">
+    <nav class="dt-case-nav" aria-label="기록 순서" id="dt-case-nav">
+      <a href="#dt-c-land">땅</a><a href="#dt-c-draw">도면</a><a href="#dt-c-cost">견적</a><a href="#dt-c-site">현장</a><a href="#dt-c-after">1년 뒤</a>
+    </nav>
+
+    <div class="dt-case-flow">
+
+      <article class="dt-ch" id="dt-c-land">
+        <p class="dt-ch-when">2023년 10월 · 계약 전</p>
+        <h3 class="dt-ch-t">처음 받은 건 지번 하나였어요</h3>
+        <figure class="dt-ch-img dt-rv"><img data-dt-src="site-before.jpg" alt="말뚝을 박아 둔 양평 서종면 땅"></figure>
+        <p class="dt-ch-p">원래 사려던 땅은 옆 마을이었어요.<br>검토서를 보니 진입로 폭이 3m라서 40평을 올리기 어려웠고,<br>두 달 뒤에 지금 땅의 지번을 다시 보내 주셨어요.</p>
+        <dl class="dt-ch-nums">
+          <div><dt>대지</dt><dd>612㎡ · 185평</dd></div>
+          <div><dt>용도지역</dt><dd>계획관리지역</dd></div>
+          <div><dt>건폐율 · 용적률</dt><dd>40% · 100%</dd></div>
+          <div><dt>검토서에 적은 주의</dt><dd>진입로 토지 사용 동의</dd></div>
+        </dl>
+      </article>
+
+      <article class="dt-ch" id="dt-c-draw">
+        <p class="dt-ch-when">2023년 12월 – 2024년 2월 · 계획설계 7주</p>
+        <h3 class="dt-ch-t">담을 한 겹 더 두르자는 건 아이들 얘기에서 나왔어요</h3>
+        <div class="dt-ch-pair">
+          <figure class="dt-ch-img dt-ch-plan dt-rv"><img data-dt-src="h01-plan.jpg" alt="벽돌 담 집 1층 평면도"></figure>
+          <figure class="dt-ch-img dt-rv"><img data-dt-src="office-desk.jpg" alt="평면도와 흰 모형"></figure>
+        </div>
+        <p class="dt-ch-p">마당에서 공을 차면 길로 굴러간다는 말을 듣고<br>낮은 벽돌 담으로 앞마당을 한 겹 더 감쌌어요.<br>평면은 두 안을 모형과 같이 보여 드렸고, 거실이 마당을 보는 안으로 정했어요.</p>
+      </article>
+
+      <article class="dt-ch" id="dt-c-cost">
+        <p class="dt-ch-when">2024년 2월 · 개략 견적</p>
+        <h3 class="dt-ch-t">계획 4억 4,150만원, 실제 4억 3,000만원</h3>
+        <p class="dt-ch-p">시공사 두 곳 견적의 평균을 계획으로 잡았어요.<br>창호는 계획보다 550만원 올랐고,<br>내장 마감을 바꿔서 1,150만원을 줄였어요.</p>
+        <div class="dt-cost" id="dt-cost"></div>
+      </article>
+
+      <article class="dt-ch" id="dt-c-site">
+        <p class="dt-ch-when">2024년 6월 – 2025년 1월 · 시공 7개월</p>
+        <h3 class="dt-ch-t">현장에 16번 갔어요</h3>
+        <div class="dt-ch-pair">
+          <figure class="dt-ch-img dt-rv"><img data-dt-src="site-build.jpg" alt="벽돌을 쌓는 중인 현장"></figure>
+          <figure class="dt-ch-img dt-ch-tall dt-rv"><img data-dt-src="h01-detail.jpg" alt="벽돌 벽과 창틀 디테일"></figure>
+        </div>
+        <ul class="dt-log">
+          <li><b>기초 검측</b><span>철근 간격과 피복 두께를 타설 전에 확인했어요.</span></li>
+          <li><b>벽돌 샘플 벽</b><span>줄눈 깊이 두 가지를 1m 벽으로 먼저 쌓아 보고 10mm로 정했어요.</span></li>
+          <li><b>골조 검측</b><span>창 위 인방 위치를 도면과 다시 맞췄어요.</span></li>
+          <li><b>방수 검측</b><span>지붕과 욕실 방수를 덮기 전에 사진으로 남겼어요.</span></li>
+        </ul>
+      </article>
+
+      <article class="dt-ch" id="dt-c-after">
+        <p class="dt-ch-when">2026년 2월 · 입주 1년</p>
+        <h3 class="dt-ch-t">입주하고 1년, 그 집에 다시 가 봤어요</h3>
+        <div class="dt-ch-pair dt-ch-daynight">
+          <figure class="dt-ch-img dt-rv"><img data-dt-src="h01-yangpyeong.jpg" alt="낮의 벽돌 담 집"><figcaption>오후 3시</figcaption></figure>
+          <figure class="dt-ch-img dt-rv"><img data-dt-src="h01-yangpyeong-dusk.jpg" alt="저녁의 벽돌 담 집"><figcaption>오후 6시 40분</figcaption></figure>
+        </div>
+        <blockquote class="dt-ch-quote">
+          <p>처음엔 담이 답답할까 걱정했는데,<br>막상 살아 보니 아이들이 마당에서 제일 오래 놀아요.<br>저녁에 불 켜진 창을 담 너머로 보는 게 좋아요.</p>
+          <cite>건축주 · 네 식구</cite>
+        </blockquote>
+        <p class="dt-ch-fix"><b>고친 것</b>입주 첫 겨울에 현관에 결로가 생겼어요.<br>방풍 문을 한 겹 더 달았고, 비용은 저희가 냈어요.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- 다음 -->
+<section class="dt-ask dt-ask-mini" id="dt-ask">
+  <h2 class="dt-ask-head">비슷한 땅이 있으신가요?</h2>
+  <form class="dt-ask-form" id="dt-ask-form">
+    <label class="dt-ask-label" for="dt-lot">땅 주소나 지번</label>
+    <div class="dt-ask-row">
+      <input class="dt-ask-input" id="dt-lot" name="lot" type="text" placeholder="예: 양평군 서종면 ○○리 123-4" autocomplete="off">
+      <button class="dt-btn" type="submit">대지 검토 받기</button>
+    </div>
+    <p class="dt-ask-note dt-keep">3일 안에 검토서를 보내 드려요.<br><span class="dt-nb">카톡 <a href="https://pf.kakao.com/" target="_blank" rel="noopener">@담터건축</a></span> · <span class="dt-nb">전화 <a href="tel:03180160523">031-8016-0523</a></span></p>
+  </form>
+</section>
+
+<footer class="dt-foot">
+  <p class="dt-foot-mark">Damteo<span>.</span></p>
+  <div class="dt-foot-info">
+    <p>담터 건축사사무소 · 대표 건축사 문경호</p>
+    <p>경기도 용인시 수지구 동천로 142, 2층</p>
+    <p>031-8016-0523 · hello@damteo.kr · 인스타그램 @damteo.arch</p>
+    <p class="dt-foot-small">이 사이트는 OXI studio 의 가상 포트폴리오예요.<br>사무소 · 사람 · 땅 · 숫자는 모두 가상이에요.</p>
+  </div>
+</footer>
+
+<!-- 사진이 있는 집: 옆에서 열리는 칸 -->
+<aside class="dt-drawer-h" id="dt-house" aria-hidden="true">
+  <div class="dt-drawer-h-in" role="dialog" aria-modal="true" aria-labelledby="dt-house-t">
+    <button class="dt-drawer-x" type="button" id="dt-house-x" aria-label="닫기"><i></i><i></i></button>
+    <div id="dt-house-body"></div>
+  </div>
+</aside>
+
+</div>

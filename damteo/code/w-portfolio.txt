@@ -1,0 +1,57 @@
+<!-- ④ Portfolio 페이지 위젯 — 아임웹 페이지 주소 /portfolio -->
+<div class="dt dt-page dt-sub" data-dt-key="portfolio">
+
+<header class="dt-gal-head">
+  <h1 class="dt-gal-t">포트폴리오</h1>
+  <div class="dt-gal-intro">
+    <p>2025년에 지은 12채예요.<br>사진을 누르면 그 집의 사진을 넘겨 볼 수 있어요.</p>
+    <div class="dt-gal-filter" role="group" aria-label="지역으로 보기" id="dt-gal-filter"></div>
+  </div>
+</header>
+
+<section class="dt-gal" id="dt-gal" aria-label="지은 집 사진"></section>
+
+<section class="dt-ask dt-ask-mini" id="dt-ask">
+  <h2 class="dt-ask-head">마음에 드는 집이 있으셨나요?</h2>
+  <form class="dt-ask-form" id="dt-ask-form">
+    <label class="dt-ask-label" for="dt-lot">땅 주소나 지번</label>
+    <div class="dt-ask-row">
+      <input class="dt-ask-input" id="dt-lot" name="lot" type="text" placeholder="예: 양평군 서종면 ○○리 123-4" autocomplete="off">
+      <button class="dt-btn" type="submit">대지 검토 받기</button>
+    </div>
+    <p class="dt-ask-note dt-keep">어느 집이 좋았는지 같이 적어 주시면 검토서에 비슷한 배치로 그려 드려요.<br><span class="dt-nb">카톡 <a href="https://pf.kakao.com/" target="_blank" rel="noopener">@담터건축</a></span> · <span class="dt-nb">전화 <a href="tel:03180160523">031-8016-0523</a></span></p>
+  </form>
+</section>
+
+<footer class="dt-foot">
+  <p class="dt-foot-mark">Damteo<span>.</span></p>
+  <div class="dt-foot-info">
+    <p>담터 건축사사무소 · 대표 건축사 문경호</p>
+    <p>경기도 용인시 수지구 동천로 142, 2층</p>
+    <p>031-8016-0523 · hello@damteo.kr · 인스타그램 @damteo.arch</p>
+    <p class="dt-foot-small">이 사이트는 OXI studio 의 가상 포트폴리오예요.<br>사무소 · 사람 · 땅 · 숫자는 모두 가상이에요.</p>
+  </div>
+</footer>
+
+<!-- 사진 보기 -->
+<div class="dt-lb" id="dt-lb" aria-hidden="true">
+  <div class="dt-lb-in" role="dialog" aria-modal="true" aria-labelledby="dt-lb-t">
+    <div class="dt-lb-stage">
+      <figure class="dt-lb-fig" id="dt-lb-fig"><img alt="" id="dt-lb-img"></figure>
+      <button class="dt-lb-nav dt-lb-prev" type="button" id="dt-lb-prev" aria-label="이전 사진"></button>
+      <button class="dt-lb-nav dt-lb-next" type="button" id="dt-lb-next" aria-label="다음 사진"></button>
+      <p class="dt-lb-count" id="dt-lb-count"></p>
+    </div>
+    <aside class="dt-lb-side">
+      <button class="dt-drawer-x" type="button" id="dt-lb-x" aria-label="닫기"><i></i><i></i></button>
+      <div id="dt-lb-info"></div>
+      <div class="dt-lb-thumbs" id="dt-lb-thumbs"></div>
+      <div class="dt-lb-more">
+        <button type="button" id="dt-lb-prevh">이전 집</button>
+        <button type="button" id="dt-lb-nexth">다음 집</button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+</div>
